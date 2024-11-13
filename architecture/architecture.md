@@ -2,7 +2,7 @@
 
 ![Project Architecture](https://github.com/user-attachments/assets/124a242a-8541-4cff-adb3-0c0c926d78ee)
 
-# Diagram Omschrijving
+# Diagram Overzicht
 > Dit diagram omvat een publicatiesysteem gebouwt in Java Spring Boot.
 >
 > Het systeem heeft de volgende componenten.
@@ -31,3 +31,28 @@ Deze component dient als centraal toegangspunt en leidt inkomende verzoeken van 
    Verstuurd notificaties wanneer Open Feign endpoint wordt aangeroepen.
 
 Elke microservice voert API-requests uit via de API Gateway en communiceert met de bijbehorende database om CRUD-bewerkingen uit te voeren.
+
+# Communicatie Overzicht
+
+## Synchrone Communicatie
+
+> Synchrone communicatie wordt toegepast wanneer directe interacties tussen microservices vereist zijn. (Open Feign)
+
+Wanneer een redacteur een post aanmaakt, opslaat of bewerkt, communiceert de Post Service direct met de Review Service om te verifiëren of de workflow correct is.
+- Dit gebreurt bij US1 - US2 - US3 & US6
+
+Voor het weergeven en filteren van gepubliceerde posts haalt de frontend de gegevens rechtstreeks op van de Post Service via een API.
+- Dit gebeurt bij US4 & US5
+
+## Asynchrone Communicatie
+
+> Asynchrone communicatie wordt gebruikt voor langlopende processen of meldingen waarbij directe feedback niet nodig is. Dit gebeurt via RabbitMQ, dat berichten tussen de microservices verzendt zonder dat ze elkaar direct nodig hebben. (Message Bus / RabbitMq)
+
+Wanneer een post door de hoofdredacteur wordt goedgekeurd of afgewezen, stuurt de Review Service een bericht naar RabbitMQ. De Post Service ontvangt dit bericht en genereert een notificatie voor de redacteur.
+- Dit gebeurt bij US7
+
+Bij een afwijzing kan de hoofdredacteur opmerkingen toevoegen, die via RabbitMQ naar de Comment Service worden gestuurd.
+- Dit gebeurt bij US8
+
+Reacties en wijzigingen in reacties worden verwerkt en opgeslagen via de Comment Service. Voor notificaties over nieuwe reacties of bewerkingen worden berichten naar RabbitMQ gestuurd, zodat de relevante gebruikers hiervan op de hoogte worden gesteld.
+- Dit gebeurt bij US9 - US10 & US11

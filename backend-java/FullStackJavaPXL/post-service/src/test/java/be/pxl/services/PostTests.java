@@ -1,5 +1,6 @@
 package be.pxl.services;
 
+import be.pxl.services.controller.request.PostRequest;
 import be.pxl.services.domain.Post;
 import be.pxl.services.repository.PostRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +19,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static junit.framework.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -159,5 +161,40 @@ public class PostTests {
                 .andExpect(jsonPath("$[0].concept").value(false));
 
         assertEquals(1, postRepository.findByIsConcept(false).size());
+    }
+
+    @Test
+    public void testUpdatePost() throws Exception {
+        Post post = Post.builder()
+                .author("Author1")
+                .content("Post Content")
+                .datePublished(LocalDateTime.now())
+                .isConcept(true)
+                .build();
+
+        post = postRepository.save(post);
+
+        PostRequest postRequest = PostRequest.builder()
+                .author("Author1000")
+                .content("New Content")
+                .datePublished(LocalDateTime.now().minusDays(12))
+                .isConcept(false)
+                .build();
+
+        String postRequestString = objectMapper.writeValueAsString(postRequest);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/post/" + post.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                        .content(postRequestString))
+                .andExpect(status().isOk());
+
+        Optional<Post> updatedPost = postRepository.findById(post.getId());
+
+        assertEquals(postRequest.getAuthor(), updatedPost.get().getAuthor());
+        assertEquals(postRequest.getContent(), updatedPost.get().getContent());
+        assertEquals(postRequest.isConcept(), updatedPost.get().isConcept());
+        assertEquals(postRequest.getDatePublished(), updatedPost.get().getDatePublished());
+
+        assertEquals(1, postRepository.findAll().size());
     }
 }

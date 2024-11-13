@@ -29,3 +29,5 @@ Deze component dient als centraal toegangspunt en leidt inkomende verzoeken van 
    Beheert opmerkingen en maakt gebruik van de MySQL Comment-database.
    ### 5.4 Notification Service
    Verstuurd notificaties wanneer Open Feign endpoint wordt aangeroepen.
+
+Elke microservice voert API-requests uit via de API Gateway en communiceert met de bijbehorende database om CRUD-bewerkingen uit te voeren.

@@ -11,7 +11,8 @@
 	<groupId>be.pxl.services</groupId>
 	<artifactId>FullStackJavaPXL</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>FullStackJavaPXL</name>
+    <packaging>pom</packaging>
+    <name>FullStackJavaPXL</name>
 	<description>FullStackJavaPXL</description>
 	<url/>
 	<licenses>
@@ -20,7 +21,10 @@
 	<developers>
 		<developer/>
 	</developers>
-	<scm>
+    <modules>
+        <module>post-service</module>
+    </modules>
+    <scm>
 		<connection/>
 		<developerConnection/>
 		<tag/>

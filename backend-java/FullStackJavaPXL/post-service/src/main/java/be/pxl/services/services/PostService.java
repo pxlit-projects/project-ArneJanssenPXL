@@ -7,6 +7,8 @@ import be.pxl.services.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostService implements IPostService{
@@ -18,6 +20,7 @@ public class PostService implements IPostService{
                 .author(post.getAuthor())
                 .content(post.getContent())
                 .datePublished(post.getDatePublished())
+                .isConcept(post.isConcept())
                 .build();
     }
 
@@ -28,10 +31,29 @@ public class PostService implements IPostService{
                 .author(postRequest.getAuthor())
                 .content(postRequest.getContent())
                 .datePublished(postRequest.getDatePublished())
+                .isConcept(postRequest.isConcept())
                 .build();
 
         post = postRepository.save(post);
 
         return mapToPostResponse(post);
+    }
+
+    @Override
+    public List<PostResponse> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+        return posts.stream().map(this::mapToPostResponse).toList();
+    }
+
+    @Override
+    public List<PostResponse> getConceptPosts() {
+        List<Post> posts = postRepository.findByIsConcept(true);
+        return posts.stream().map(this::mapToPostResponse).toList();
+    }
+
+    @Override
+    public List<PostResponse> getPublishedPosts() {
+        List<Post> posts = postRepository.findByIsConcept(false);
+        return posts.stream().map(this::mapToPostResponse).toList();
     }
 }

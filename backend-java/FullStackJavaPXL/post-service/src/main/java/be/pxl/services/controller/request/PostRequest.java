@@ -16,4 +16,5 @@ public class PostRequest {
     private String author;
     private String content;
     private LocalDateTime datePublished;
+    private boolean isConcept;
 }

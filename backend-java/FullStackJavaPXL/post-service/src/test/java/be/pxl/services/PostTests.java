@@ -20,6 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDateTime;
 
 import static junit.framework.Assert.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -52,11 +53,12 @@ public class PostTests {
     }
 
     @Test
-    public void createPost() throws Exception {
+    public void testCreatePost() throws Exception {
         Post post = Post.builder()
                 .author("Author")
                 .content("Post Content")
                 .datePublished(LocalDateTime.now())
+                .isConcept(true)
                 .build();
 
         String postString = objectMapper.writeValueAsString(post);
@@ -67,5 +69,95 @@ public class PostTests {
                 .andExpect(status().isCreated());
 
         assertEquals(1, postRepository.findAll().size());
+    }
+
+    @Test
+    public void testGetAllPosts() throws Exception {
+        Post post1 = Post.builder()
+                .author("Author1")
+                .content("Post Content")
+                .datePublished(LocalDateTime.now())
+                .isConcept(true)
+                .build();
+
+        Post post2 = Post.builder()
+                .author("Author2")
+                .content("Post Content 2")
+                .datePublished(LocalDateTime.now().minusDays(4))
+                .isConcept(false)
+                .build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/post")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].author").value("Author1"))
+                .andExpect(jsonPath("$[0].content").value("Post Content"))
+                .andExpect(jsonPath("$[0].concept").value(true))
+                .andExpect(jsonPath("$[1].author").value("Author2"))
+                .andExpect(jsonPath("$[1].content").value("Post Content 2"))
+                .andExpect(jsonPath("$[1].concept").value(false));
+
+        assertEquals(2, postRepository.findAll().size());
+    }
+
+    @Test
+    public void testGetAllConceptPosts() throws Exception{
+        Post post1 = Post.builder()
+                .author("Author1")
+                .content("Post Content")
+                .datePublished(LocalDateTime.now())
+                .isConcept(true)
+                .build();
+
+        Post post2 = Post.builder()
+                .author("Author2")
+                .content("Post Content 2")
+                .datePublished(LocalDateTime.now().minusDays(4))
+                .isConcept(false)
+                .build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/post/concept")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].author").value("Author1"))
+                .andExpect(jsonPath("$[0].content").value("Post Content"))
+                .andExpect(jsonPath("$[0].concept").value(true));
+
+        assertEquals(1, postRepository.findByIsConcept(true).size());
+    }
+
+    @Test
+    public void testGetAllPublishedPosts() throws Exception{
+        Post post1 = Post.builder()
+                .author("Author1")
+                .content("Post Content")
+                .datePublished(LocalDateTime.now())
+                .isConcept(true)
+                .build();
+
+        Post post2 = Post.builder()
+                .author("Author2")
+                .content("Post Content 2")
+                .datePublished(LocalDateTime.now().minusDays(4))
+                .isConcept(false)
+                .build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/post/published")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].author").value("Author2"))
+                .andExpect(jsonPath("$[0].content").value("Post Content 2"))
+                .andExpect(jsonPath("$[0].concept").value(false));
+
+        assertEquals(1, postRepository.findByIsConcept(false).size());
     }
 }

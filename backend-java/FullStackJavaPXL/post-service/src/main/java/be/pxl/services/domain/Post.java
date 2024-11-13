@@ -21,6 +21,7 @@ public class Post {
     private String author;
     private String content;
     private LocalDateTime datePublished;
+    private boolean isConcept;
     // private List<Review> reviews; @Transient
     // private List<Comment> comments; @Transient
 }

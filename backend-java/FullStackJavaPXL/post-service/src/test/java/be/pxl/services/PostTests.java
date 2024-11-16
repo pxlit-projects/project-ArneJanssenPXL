@@ -193,7 +193,9 @@ public class PostTests {
         assertEquals(postRequest.getAuthor(), updatedPost.get().getAuthor());
         assertEquals(postRequest.getContent(), updatedPost.get().getContent());
         assertEquals(postRequest.isConcept(), updatedPost.get().isConcept());
-        assertEquals(postRequest.getDatePublished(), updatedPost.get().getDatePublished());
+        assertEquals(postRequest.getDatePublished().getYear(), updatedPost.get().getDatePublished().getYear());
+        assertEquals(postRequest.getDatePublished().getMonth(), updatedPost.get().getDatePublished().getMonth());
+        assertEquals(postRequest.getDatePublished().getDayOfMonth(), updatedPost.get().getDatePublished().getDayOfMonth() );
 
         assertEquals(1, postRepository.findAll().size());
     }

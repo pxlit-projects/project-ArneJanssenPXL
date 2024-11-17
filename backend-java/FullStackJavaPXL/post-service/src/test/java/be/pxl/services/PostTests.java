@@ -61,6 +61,8 @@ public class PostTests {
                 .content("Post Content")
                 .datePublished(LocalDateTime.now())
                 .isConcept(true)
+                .title("Title")
+                .category("Category")
                 .build();
 
         String postString = objectMapper.writeValueAsString(post);
@@ -80,6 +82,8 @@ public class PostTests {
                 .content("Post Content")
                 .datePublished(LocalDateTime.now())
                 .isConcept(true)
+                .title("Title")
+                .category("Category")
                 .build();
 
         Post post2 = Post.builder()
@@ -87,6 +91,8 @@ public class PostTests {
                 .content("Post Content 2")
                 .datePublished(LocalDateTime.now().minusDays(4))
                 .isConcept(false)
+                .title("Title2")
+                .category("Category2")
                 .build();
 
         postRepository.save(post1);
@@ -98,9 +104,13 @@ public class PostTests {
                 .andExpect(jsonPath("$[0].author").value("Author1"))
                 .andExpect(jsonPath("$[0].content").value("Post Content"))
                 .andExpect(jsonPath("$[0].concept").value(true))
+                .andExpect(jsonPath("$[0].title").value("Title"))
+                .andExpect(jsonPath("$[0].category").value("Category"))
                 .andExpect(jsonPath("$[1].author").value("Author2"))
                 .andExpect(jsonPath("$[1].content").value("Post Content 2"))
-                .andExpect(jsonPath("$[1].concept").value(false));
+                .andExpect(jsonPath("$[1].concept").value(false))
+                .andExpect(jsonPath("$[1].title").value("Title2"))
+                .andExpect(jsonPath("$[1].category").value("Category2"));
 
         assertEquals(2, postRepository.findAll().size());
     }
@@ -112,6 +122,8 @@ public class PostTests {
                 .content("Post Content")
                 .datePublished(LocalDateTime.now())
                 .isConcept(true)
+                .title("Title")
+                .category("Category")
                 .build();
 
         Post post2 = Post.builder()
@@ -119,6 +131,8 @@ public class PostTests {
                 .content("Post Content 2")
                 .datePublished(LocalDateTime.now().minusDays(4))
                 .isConcept(false)
+                .title("Title2")
+                .category("Category2")
                 .build();
 
         postRepository.save(post1);
@@ -129,7 +143,9 @@ public class PostTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].author").value("Author1"))
                 .andExpect(jsonPath("$[0].content").value("Post Content"))
-                .andExpect(jsonPath("$[0].concept").value(true));
+                .andExpect(jsonPath("$[0].concept").value(true))
+                .andExpect(jsonPath("$[0].title").value("Title"))
+                .andExpect(jsonPath("$[0].category").value("Category"));
 
         assertEquals(1, postRepository.findByIsConcept(true).size());
     }
@@ -141,6 +157,8 @@ public class PostTests {
                 .content("Post Content")
                 .datePublished(LocalDateTime.now())
                 .isConcept(true)
+                .title("Title")
+                .category("Category")
                 .build();
 
         Post post2 = Post.builder()
@@ -148,6 +166,8 @@ public class PostTests {
                 .content("Post Content 2")
                 .datePublished(LocalDateTime.now().minusDays(4))
                 .isConcept(false)
+                .title("Title2")
+                .category("Category2")
                 .build();
 
         postRepository.save(post1);
@@ -158,7 +178,9 @@ public class PostTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].author").value("Author2"))
                 .andExpect(jsonPath("$[0].content").value("Post Content 2"))
-                .andExpect(jsonPath("$[0].concept").value(false));
+                .andExpect(jsonPath("$[0].concept").value(false))
+                .andExpect(jsonPath("$[0].title").value("Title2"))
+                .andExpect(jsonPath("$[0].category").value("Category2"));
 
         assertEquals(1, postRepository.findByIsConcept(false).size());
     }
@@ -170,6 +192,8 @@ public class PostTests {
                 .content("Post Content")
                 .datePublished(LocalDateTime.now())
                 .isConcept(true)
+                .title("Title")
+                .category("Category")
                 .build();
 
         post = postRepository.save(post);
@@ -179,6 +203,8 @@ public class PostTests {
                 .content("New Content")
                 .datePublished(LocalDateTime.now().minusDays(12))
                 .isConcept(false)
+                .title("Title2")
+                .category("Category2")
                 .build();
 
         String postRequestString = objectMapper.writeValueAsString(postRequest);
@@ -195,7 +221,9 @@ public class PostTests {
         assertEquals(postRequest.isConcept(), updatedPost.get().isConcept());
         assertEquals(postRequest.getDatePublished().getYear(), updatedPost.get().getDatePublished().getYear());
         assertEquals(postRequest.getDatePublished().getMonth(), updatedPost.get().getDatePublished().getMonth());
-        assertEquals(postRequest.getDatePublished().getDayOfMonth(), updatedPost.get().getDatePublished().getDayOfMonth() );
+        assertEquals(postRequest.getDatePublished().getDayOfMonth(), updatedPost.get().getDatePublished().getDayOfMonth());
+        assertEquals(postRequest.getTitle(), updatedPost.get().getTitle());
+        assertEquals(postRequest.getCategory(), updatedPost.get().getCategory());
 
         assertEquals(1, postRepository.findAll().size());
     }

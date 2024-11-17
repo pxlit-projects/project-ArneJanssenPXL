@@ -25,6 +25,8 @@ public class PostService implements IPostService{
                 .content(post.getContent())
                 .datePublished(post.getDatePublished())
                 .isConcept(post.isConcept())
+                .title(post.getTitle())
+                .category(post.getCategory())
                 .build();
     }
 
@@ -37,6 +39,8 @@ public class PostService implements IPostService{
                 .content(postRequest.getContent())
                 .datePublished(postRequest.getDatePublished())
                 .isConcept(postRequest.isConcept())
+                .title(postRequest.getTitle())
+                .category(postRequest.getCategory())
                 .build();
 
         log.info("Saving post ({}) in repository", post);
@@ -81,6 +85,8 @@ public class PostService implements IPostService{
         post.setContent(postRequest.getContent());
         post.setConcept(postRequest.isConcept());
         post.setDatePublished(postRequest.getDatePublished());
+        post.setTitle(postRequest.getTitle());
+        post.setCategory(postRequest.getCategory());
 
         log.info("Saving post ({}) in repository", post);
         post = postRepository.save(post);

@@ -8,7 +8,7 @@ import { Post } from '../models/post.model';
   providedIn: 'root'
 })
 export class PostService {
-  private api: string = environment.apiUrl + 'api/post';
+  private api: string = environment.apiUrl + 'post/api/post';
   private http: HttpClient = inject(HttpClient);
 
   getAllPosts(): Observable<Post[]>{

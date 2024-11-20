@@ -47,4 +47,10 @@ public class PostController {
         log.info("Calling endpoint [PUT] /api/post/{} with params: {} in PathVariable & with params: {} in RequestBody", id, id, postRequest);
         postService.updatePost(id, postRequest);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getPostById(@PathVariable Long id){
+        log.info("Calling endpoint [GET] /api/post/{} with params: {} in PathVariable", id, id);
+        return new ResponseEntity(postService.getPostById(id), HttpStatus.OK);
+    }
 }

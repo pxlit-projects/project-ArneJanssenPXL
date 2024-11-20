@@ -31,7 +31,7 @@ export class AddPostComponent {
       const newPost: Post = { ...this.postForm.value };
       this.postService.createPost(newPost).subscribe(() => {
         this.postForm.reset();
-        this.router.navigate(['/home']);
+        this.router.navigate(['/posts']);
       });
     }
   }

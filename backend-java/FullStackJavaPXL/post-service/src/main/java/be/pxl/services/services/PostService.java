@@ -95,4 +95,14 @@ public class PostService implements IPostService{
         log.info("Mapping {} To PostResponse", post);
         return mapToPostResponse(post);
     }
+
+    @Override
+    public PostResponse getPostById(Long id) {
+        log.info("Finding post with id: {}", id);
+        Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("Post with id: " + id + " does not exist"));
+        log.info("Successfully found post with id: {}", id);
+
+        log.info("Mapping {} To PostResponse", post);
+        return mapToPostResponse(post);
+    }
 }

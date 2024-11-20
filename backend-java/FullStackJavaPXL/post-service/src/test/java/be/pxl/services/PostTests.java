@@ -227,4 +227,39 @@ public class PostTests {
 
         assertEquals(1, postRepository.findAll().size());
     }
+
+    @Test
+    public void testGetPostById() throws Exception{
+        Post post1 = Post.builder()
+                .author("Author1")
+                .content("Post Content")
+                .datePublished(LocalDateTime.now())
+                .isConcept(true)
+                .title("Title")
+                .category("Category")
+                .build();
+
+        Post post2 = Post.builder()
+                .author("Author2")
+                .content("Post Content 2")
+                .datePublished(LocalDateTime.now().minusDays(4))
+                .isConcept(false)
+                .title("Title2")
+                .category("Category2")
+                .build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/post/" + post2.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.author").value("Author2"))
+                .andExpect(jsonPath("$.content").value("Post Content 2"))
+                .andExpect(jsonPath("$.concept").value(false))
+                .andExpect(jsonPath("$.title").value("Title2"))
+                .andExpect(jsonPath("$.category").value("Category2"));
+
+        assertTrue(postRepository.findById(post2.getId()).isPresent());
+    }
 }

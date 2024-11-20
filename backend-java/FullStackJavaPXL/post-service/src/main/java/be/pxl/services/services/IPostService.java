@@ -11,4 +11,6 @@ public interface IPostService {
     List<PostResponse> getConceptPosts();
     List<PostResponse> getPublishedPosts();
     PostResponse updatePost(Long id, PostRequest postRequest);
+
+    PostResponse getPostById(Long id);
 }

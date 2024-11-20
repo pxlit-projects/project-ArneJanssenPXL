@@ -30,4 +30,8 @@ export class PostService {
   updatePost(id: number, post: Post): Observable<void>{
     return this.http.put<void>(`${this.api}/${id}`, post);
   }
+
+  getPostById(id: number): Observable<Post>{
+    return this.http.get<Post>(`${this.api}/${id}`);
+  }
 }

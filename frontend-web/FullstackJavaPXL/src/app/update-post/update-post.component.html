@@ -1,23 +1,22 @@
-
-<form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="postFormUi">
-    <h1>Schrijf een post</h1>
+<form [formGroup]="updateForm" (ngSubmit)="onSubmit()" class="updateFormUi">
+    <h1>Bewerk een post</h1>
     <input type="text" formControlName="title" placeholder="Titel"><br>
-    @if (postForm.controls['title'].invalid && postForm.controls['title'].touched){
+    @if (updateForm.controls['title'].invalid && updateForm.controls['title'].touched){
         <p class="errorMessage">Titel is vereist!</p>
     }
 
     <input type="text" formControlName="author" placeholder="Auteur"><br>
-    @if (postForm.controls['author'].invalid && postForm.controls['author'].touched){
+    @if (updateForm.controls['author'].invalid && updateForm.controls['author'].touched){
         <p class="errorMessage">Auteur is vereist!</p>
     }
 
     <input type="text" formControlName="category" placeholder="Categorie"><br>
-    @if (postForm.controls['category'].invalid && postForm.controls['category'].touched){
+    @if (updateForm.controls['category'].invalid && updateForm.controls['category'].touched){
         <p class="errorMessage">Categorie is vereist!</p>
     }
 
     <textarea id="content" formControlName="content" placeholder="Content"><br></textarea>
-    @if (postForm.controls['content'].invalid && postForm.controls['content'].touched){
+    @if (updateForm.controls['content'].invalid && updateForm.controls['content'].touched){
         <p class="errorMessage">Content is vereist!</p>
     }
 
@@ -26,7 +25,7 @@
         <input type="checkbox" formControlName="concept">
     </div>
 
-    <button type="submit" [disabled]="!postForm.valid">
+    <button type="submit" [disabled]="!updateForm.valid">
         Maak
     </button>
 </form>

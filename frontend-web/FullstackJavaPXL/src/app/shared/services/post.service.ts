@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Post } from '../models/post.model';
+import { Filter } from '../models/filter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,4 +35,20 @@ export class PostService {
   getPostById(id: number): Observable<Post>{
     return this.http.get<Post>(`${this.api}/${id}`);
   }
+
+  private isPostMatchingFilter(post: Post, filter: Filter){
+    const matchesContent = post.content.toLowerCase().includes(filter.content.toLowerCase());
+    const matchesAuthor = post.author.toLowerCase().includes(filter.author.toLowerCase());
+    const matchesDatePublished =
+    !filter.datePublished || 
+    new Date(post.datePublished).toDateString() === filter.datePublished.toDateString();
+
+    return matchesContent && matchesAuthor && matchesDatePublished;
+  }
+
+  filterPosts(filter: Filter): Observable<Post[]> {
+    return this.http.get<Post[]>(this.api).pipe(
+        map((post: Post[]) => post.filter(post => this.isPostMatchingFilter(post, filter)))
+    );
+}
 }

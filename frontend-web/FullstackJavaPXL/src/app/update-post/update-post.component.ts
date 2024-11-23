@@ -37,7 +37,7 @@ export class UpdatePostComponent implements OnInit{
         content: post.content,
         author: post.author,
         category: post.category,
-        //concept: post.concept
+        concept: post.isConcept
       });
     });
   }

@@ -46,9 +46,15 @@ export class PostService {
     return matchesContent && matchesAuthor && matchesDatePublished;
   }
 
-  filterPosts(filter: Filter): Observable<Post[]> {
-    return this.http.get<Post[]>(this.api).pipe(
+  filterPublishedPosts(filter: Filter): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.api}/published`).pipe(
         map((post: Post[]) => post.filter(post => this.isPostMatchingFilter(post, filter)))
     );
-}
+  }
+
+  filterConceptPosts(filter: Filter): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.api}/concept`).pipe(
+        map((post: Post[]) => post.filter(post => this.isPostMatchingFilter(post, filter)))
+    );
+  }
 }

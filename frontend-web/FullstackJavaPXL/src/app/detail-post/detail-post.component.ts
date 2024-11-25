@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Post } from '../shared/models/post.model';
 import { AsyncPipe, CommonModule } from '@angular/common';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-detail-post',
@@ -24,5 +25,11 @@ export class DetailPostComponent implements OnDestroy{
     if (this.sub) {
       this.sub.unsubscribe();
     }
+  }
+
+  authService: AuthService = inject(AuthService);
+  
+  isRedacteur(): boolean {
+    return this.authService.getRole() === 'Redacteur';
   }
 }

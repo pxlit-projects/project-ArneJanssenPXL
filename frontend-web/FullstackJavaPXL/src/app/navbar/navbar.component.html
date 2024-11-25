@@ -5,7 +5,12 @@
     <div class="menu">
         <a [routerLink]="['/home']">HOME</a>
         <a [routerLink]="['/posts']">POSTS</a>
-        <a [routerLink]="['/add-post']">POST TOEVOEGEN</a>
+        @if(isRedacteur()){
+            <a [routerLink]="['concept-posts']">CONCEPT POSTS</a>
+        }
+        @if(isRedacteur()){
+            <a [routerLink]="['/add-post']">POST TOEVOEGEN</a>
+        }
         <a [routerLink]="['/login']">LOGIN</a>
     </div>
 </nav>

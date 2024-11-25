@@ -7,6 +7,7 @@ import { PostListComponent } from './post-list/post-list.component';
 import { UpdatePostComponent } from './update-post/update-post.component';
 import { confirmLeaveAddPostGuard } from './confirm-leave-add-post.guard';
 import { confirmLeaveUpdatePostGuard } from './confirm-leave-update-post.guard';
+import { PostListConceptComponent } from './post-list-concept/post-list-concept.component';
 
 export const routes: Routes = [
     { path: '', component: WelcomeComponent }, 
@@ -15,5 +16,6 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'post/:id', component: DetailPostComponent},
     { path: 'posts', component: PostListComponent},
-    { path: 'update-post/:id', component: UpdatePostComponent, canDeactivate: [confirmLeaveUpdatePostGuard]}
+    { path: 'update-post/:id', component: UpdatePostComponent, canDeactivate: [confirmLeaveUpdatePostGuard]},
+    { path: 'concept-posts', component: PostListConceptComponent}
 ];

@@ -1,16 +1,34 @@
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
 <nav class="navbar">
     <div class="brand">
         PXL NIEUWS
     </div>
     <div class="menu">
-        <a [routerLink]="['/home']">HOME</a>
-        <a [routerLink]="['/posts']">POSTS</a>
+        <a [routerLink]="['/home']">
+            <mat-icon aria-hidden="false" aria-label="Home icon">home</mat-icon>
+            HOME
+        </a>
+        <a [routerLink]="['/posts']">
+            <mat-icon aria-hidden="false" aria-label="Posts icon">article</mat-icon>
+            POSTS
+        </a>
         @if(isRedacteur()){
-            <a [routerLink]="['concept-posts']">CONCEPT POSTS</a>
+            <a [routerLink]="['/concept-posts']">
+                <mat-icon aria-hidden="false" aria-label="Concept posts icon">drafts</mat-icon>
+                CONCEPT POSTS
+            </a>
         }
         @if(isRedacteur()){
-            <a [routerLink]="['/add-post']">POST TOEVOEGEN</a>
+            <a [routerLink]="['/add-post']">
+                <mat-icon aria-hidden="false" aria-label="Add post icon">add</mat-icon>
+                POST TOEVOEGEN
+            </a>
         }
-        <a [routerLink]="['/login']">LOGIN</a>
+        <a [routerLink]="['/login']">
+            <mat-icon aria-hidden="false" aria-label="Login icon">login</mat-icon>
+            LOGIN
+        </a>
     </div>
 </nav>

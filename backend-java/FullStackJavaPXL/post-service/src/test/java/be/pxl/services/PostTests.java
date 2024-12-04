@@ -262,4 +262,14 @@ public class PostTests {
 
         assertTrue(postRepository.findById(post2.getId()).isPresent());
     }
+
+    @Test
+    public void testGetPostByIdWhenIdNotFound() throws Exception {
+        long notFoundId = 25L;
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/post/" + notFoundId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(status().reason("Post not found"));
+    }
 }

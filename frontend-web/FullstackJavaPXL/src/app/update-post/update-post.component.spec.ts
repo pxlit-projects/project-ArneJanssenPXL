@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideHttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import { UpdatePostComponent } from './update-post.component';
 
 describe('UpdatePostComponent', () => {
@@ -7,10 +8,19 @@ describe('UpdatePostComponent', () => {
   let fixture: ComponentFixture<UpdatePostComponent>;
 
   beforeEach(async () => {
+    const activatedRouteMock = {
+      snapshot: {
+        params: {}  
+      }
+    };
+
     await TestBed.configureTestingModule({
-      imports: [UpdatePostComponent]
-    })
-    .compileComponents();
+      imports: [UpdatePostComponent],
+      providers: [
+        provideHttpClient(),
+        { provide: ActivatedRoute, useValue: activatedRouteMock }  
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UpdatePostComponent);
     component = fixture.componentInstance;
@@ -18,6 +28,7 @@ describe('UpdatePostComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeTruthy();  
   });
 });
+

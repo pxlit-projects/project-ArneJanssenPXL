@@ -1,17 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { CanDeactivateFn } from '@angular/router';
-
 import { confirmLeaveUpdatePostGuard } from './confirm-leave-update-post.guard';
+import { UpdatePostComponent } from './update-post/update-post.component';
 
 describe('confirmLeaveUpdatePostGuard', () => {
-  const executeGuard: CanDeactivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => confirmLeaveUpdatePostGuard(...guardParameters));
+  let guard: CanDeactivateFn<UpdatePostComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
+    guard = confirmLeaveUpdatePostGuard;
   });
 
   it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+    expect(guard).toBeTruthy();
   });
 });

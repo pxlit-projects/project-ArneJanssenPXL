@@ -15,20 +15,40 @@
             POSTS
         </a>
         @if(isRedacteur()){
-            <a [routerLink]="['/concept-posts']">
-                <mat-icon aria-hidden="false" aria-label="Concept posts icon">drafts</mat-icon>
-                CONCEPT POSTS
+            <a [routerLink]="['/submitted-posts']">
+                <mat-icon aria-hidden="false" aria-label="submit posts icon">drafts</mat-icon>
+                INGEZONDEN POSTS
             </a>
-        }
-        @if(isRedacteur()){
+
+            <div class="dropdown">
+                <a>
+                    <mat-icon aria-hidden="false" aria-label="concept posts icon">bookmarks</mat-icon>
+                    EIGEN POSTS
+                    <mat-icon aria-hidden="false">arrow_drop_down</mat-icon>
+                </a>
+                <div class="dropdown-menu">
+                    <a [routerLink]="['/concept-posts']">CONCEPT</a>
+                    <a [routerLink]="['/approved-posts']">GOEDGEKEURD</a>
+                    <a [routerLink]="['/rejected-posts']">AFGEKEURD</a>
+                </div>
+            </div>
+
             <a [routerLink]="['/add-post']">
                 <mat-icon aria-hidden="false" aria-label="Add post icon">add</mat-icon>
                 POST TOEVOEGEN
             </a>
         }
-        <a [routerLink]="['/login']">
-            <mat-icon aria-hidden="false" aria-label="Login icon">login</mat-icon>
-            LOGIN
-        </a>
+        @if (isLoggedIn()) {
+            <a href="#" (click)="logout()">
+                <mat-icon aria-hidden="false" aria-label="Logout icon">logout</mat-icon>
+                AFMELDEN
+            </a>
+        }
+        @else {
+            <a [routerLink]="['/login']">
+                <mat-icon aria-hidden="false" aria-label="Login icon">login</mat-icon>
+                AANMELDEN
+            </a>
+        }
     </div>
 </nav>

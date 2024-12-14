@@ -7,5 +7,14 @@
         @if(isRedacteur()){
             <button [routerLink]="['/update-post', post.id]" routerLinkLinkActive="router-link-active">Bewerk</button>
         }
+        <br>
+        @if(post.postStatus == "SUBMITTED"){
+            <button class="approve-button">
+                KEUR GOED
+            </button>
+            <button class="reject-button">
+                KEUR AF
+            </button>
+        }
     </div>
 }

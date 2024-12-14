@@ -6,25 +6,33 @@
         <p class="errorMessage">Titel is vereist!</p>
     }
 
+    <!---
     <input type="text" formControlName="author" placeholder="Auteur"><br>
     @if (postForm.controls['author'].invalid && postForm.controls['author'].touched){
         <p class="errorMessage">Auteur is vereist!</p>
     }
+    --->
 
     <input type="text" formControlName="category" placeholder="Categorie"><br>
     @if (postForm.controls['category'].invalid && postForm.controls['category'].touched){
         <p class="errorMessage">Categorie is vereist!</p>
     }
 
-    <textarea id="content" formControlName="content" placeholder="Content"><br></textarea>
+    <textarea id="content" formControlName="content" placeholder="Content"></textarea><br>
     @if (postForm.controls['content'].invalid && postForm.controls['content'].touched){
         <p class="errorMessage">Content is vereist!</p>
     }
 
-    <div class="select-container">
-        <label for="isConcept">Concept:</label>
-        <input type="checkbox" formControlName="isConcept">
-    </div>
+    <select formControlName="postStatus">
+        <option value="" disabled selected>Kies een type</option>
+        <option value="CONCEPT">BEWAAR ALS CONCEPT</option>
+        <option value="SUBMITTED">PLAATS VOOR GOEDKEURING</option>
+        <option value="PUBLISHED">PUBLICEER POST</option>
+    </select>
+    <br>
+    @if (postForm.controls['postStatus'].invalid && postForm.controls['postStatus'].touched){
+        <p class="errorMessage">Status is vereist</p>
+    }
 
     <button type="submit" [disabled]="!postForm.valid">
         Maak

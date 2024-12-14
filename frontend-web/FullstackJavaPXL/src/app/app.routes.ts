@@ -7,7 +7,10 @@ import { PostListComponent } from './post-list/post-list.component';
 import { UpdatePostComponent } from './update-post/update-post.component';
 import { confirmLeaveAddPostGuard } from './confirm-leave-add-post.guard';
 import { confirmLeaveUpdatePostGuard } from './confirm-leave-update-post.guard';
-import { PostListConceptComponent } from './post-list-concept/post-list-concept.component';
+import { PostListSubmittedComponent } from './post-list-submitted/post-list-submitted.component';
+import { PostConceptListComponent } from './post-concept-list/post-concept-list.component';
+import { PostApprovedListComponent } from './post-approved-list/post-approved-list.component';
+import { PostRejectedListComponent } from './post-rejected-list/post-rejected-list.component';
 
 export const routes: Routes = [
     { path: '', component: WelcomeComponent }, 
@@ -17,5 +20,8 @@ export const routes: Routes = [
     { path: 'post/:id', component: DetailPostComponent},
     { path: 'posts', component: PostListComponent},
     { path: 'update-post/:id', component: UpdatePostComponent, canDeactivate: [confirmLeaveUpdatePostGuard]},
-    { path: 'concept-posts', component: PostListConceptComponent}
+    { path: 'submitted-posts', component: PostListSubmittedComponent},
+    { path: 'concept-posts', component: PostConceptListComponent},
+    { path: 'approved-posts', component: PostApprovedListComponent},
+    { path: 'rejected-posts', component: PostRejectedListComponent},
 ];

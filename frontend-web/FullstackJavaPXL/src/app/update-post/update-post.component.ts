@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Post } from '../shared/models/post.model';
+import { User } from '../shared/models/user.model';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-update-post',
@@ -14,41 +16,62 @@ import { Post } from '../shared/models/post.model';
 })
 export class UpdatePostComponent implements OnInit{
   postService: PostService = inject(PostService);
+  authService: AuthService = inject(AuthService);
   router: Router = inject(Router);
   fb: FormBuilder = inject(FormBuilder);
   route: ActivatedRoute = inject(ActivatedRoute);
   id: number = this.route.snapshot.params['id'];
+  user: User | null | undefined;
+  errorMessage: string = '';
 
   post$: Observable<Post> = this.postService.getPostById(this.id);
 
   updateForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
     content: ['', Validators.required],
-    author: ['', Validators.required],
     category: ['', Validators.required],
-    datePublished: [new Date().toISOString()],
-    concept: [false]
+    postStatus: ['', Validators.required]
   });
 
   ngOnInit(): void {
+    this.user = this.authService.getCurrentUser();
+    if (!this.user) {
+      this.router.navigate(['/login']);
+    }
+    if (this.user!.role !== 'Redacteur') {
+      this.router.navigate(['/posts']);
+    }
+
     this.post$.subscribe((post) => {
       this.updateForm.patchValue({
         title: post.title,
         content: post.content,
-        author: post.author,
         category: post.category,
-        concept: post.isConcept
+        postStatus: post.postStatus
       });
     });
   }
 
   onSubmit(): void {
     if (this.updateForm.valid) {
-      const updatedPost: Post = { ...this.updateForm.value };
-      this.postService.updatePost(this.id, updatedPost).subscribe(() => {
-        this.updateForm.reset();
-        this.router.navigate(['/posts']); 
-      });
+        const updatedPost: Post = { ...this.updateForm.value };
+        this.postService.updatePost(this.id, updatedPost, this.user!.username, this.user!.id).subscribe({
+            next: () => {
+                this.updateForm.reset();
+                this.router.navigate(['/posts']);
+            },
+            error: (error) => {
+                if (error.status === 403) {
+                    this.errorMessage = "Je hebt niet de juiste rechten."
+                } 
+                else {
+                    this.errorMessage = "Er is een fout opgetreden bij het bijwerken van het bericht. Probeer het opnieuw."
+                }
+            }
+        });
+    } 
+    else {
+      this.errorMessage = "Form is onjuist. Controlleer alle velden.";
     }
   }
 }

@@ -18,12 +18,17 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String author;
+    private int authorId;
+
     private String content;
-    private LocalDateTime datePublished;
-    private boolean isConcept;
     private String title;
     private String category;
-    // private List<Review> reviews; @Transient
-    // private List<Comment> comments; @Transient
+
+    private LocalDateTime datePublished;
+    private LocalDateTime dateCreated = LocalDateTime.now();
+
+    @Enumerated(value = EnumType.STRING)
+    private PostStatus postStatus;
 }

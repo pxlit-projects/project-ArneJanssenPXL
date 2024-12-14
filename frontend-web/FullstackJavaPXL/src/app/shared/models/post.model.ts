@@ -1,18 +1,11 @@
-export class Post{
-    author: string;
-    content: string;
-    datePublished: Date;
-    isConcept: boolean;
+export interface Post{
+    id: number;
     title: string;
+    content: string;
     category: string;
-    id?: number;
-    
-    constructor(author: string, content: string, datePublished: Date, isConcept: boolean, title: string, category: string) {
-        this.author = author;
-        this.content = content;
-        this.datePublished = datePublished;
-        this.isConcept = isConcept;
-        this.title = title;
-        this.category = category;
-    }
+    postStatus: string;
+    author: string;
+    authorId: number;
+    dateCreated: Date;
+    datePublished: Date;
 }

@@ -1,0 +1,7 @@
+export enum PostStatus {
+    SUBMITTED = 'SUBMITTED',
+    CONCEPT = 'CONCEPT',
+    PUBLISHED = 'PUBLISHED',
+    REJECTED = 'REJECTED',
+    APPROVED = 'APPROVED',
+  }

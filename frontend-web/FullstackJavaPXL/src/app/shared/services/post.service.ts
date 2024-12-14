@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Post } from '../models/post.model';
 import { Filter } from '../models/filter.model';
+import { PostStatus } from '../models/postStatus.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,24 +17,45 @@ export class PostService {
     return this.http.get<Post[]>(this.api);
   }
 
-  getAllConceptPosts(): Observable<Post[]>{
-    return this.http.get<Post[]>(`${this.api}/concept`);
-  }
-
   getAllPublishedPosts(): Observable<Post[]>{
     return this.http.get<Post[]>(`${this.api}/published`);
   }
 
-  createPost(post: Post): Observable<Post>{
-    return this.http.post<Post>(this.api, post);
+  getAllSubmittedPosts(): Observable<Post[]>{
+    return this.http.get<Post[]>(`${this.api}/submitted`);
   }
 
-  updatePost(id: number, post: Post): Observable<void>{
-    return this.http.put<void>(`${this.api}/${id}`, post);
+  createPost(post: Post, author: string, authorId: number): Observable<Post> {
+    return this.http.post<Post>(this.api, post, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'author': author,
+        'authorId': authorId.toString(),
+      }),
+    });
+  }
+
+  updatePost(id: number, post: Post, author: string, authorId: number): Observable<void> {
+    return this.http.put<void>(`${this.api}/${id}`, post, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'author': author,
+        'authorId': authorId.toString(),
+      }),
+    });
   }
 
   getPostById(id: number): Observable<Post>{
     return this.http.get<Post>(`${this.api}/${id}`);
+  }
+
+  getPostsByAuthorIdAndStatus(authorId: number, postStatus: PostStatus): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.api}/filter/${postStatus}`, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'authorId': authorId.toString(),
+      }),
+    });
   }
 
   private isPostMatchingFilter(post: Post, filter: Filter){
@@ -52,8 +74,47 @@ export class PostService {
     );
   }
 
-  filterConceptPosts(filter: Filter): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.api}/concept`).pipe(
+  filterConceptPosts(filter: Filter, authorId: number): Observable<Post[]> {
+    const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'authorId': authorId.toString(),
+    });
+
+    return this.http.get<Post[]>(`${this.api}/post/filter/${PostStatus.CONCEPT}`, { headers }).pipe(
+      map((posts: Post[]) => 
+        posts.filter(post => this.isPostMatchingFilter(post, filter))
+      )
+    );
+  }
+
+  filterApprovedPosts(filter: Filter, authorId: number): Observable<Post[]> {
+    const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'authorId': authorId.toString(),
+    });
+
+    return this.http.get<Post[]>(`${this.api}/post/filter/${PostStatus.APPROVED}`, { headers }).pipe(
+      map((posts: Post[]) => 
+        posts.filter(post => this.isPostMatchingFilter(post, filter))
+      )
+    );
+  }
+
+  filterRejectedPosts(filter: Filter, authorId: number): Observable<Post[]> {
+    const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'authorId': authorId.toString(),
+    });
+
+    return this.http.get<Post[]>(`${this.api}/post/filter/${PostStatus.REJECTED}`, { headers }).pipe(
+      map((posts: Post[]) => 
+        posts.filter(post => this.isPostMatchingFilter(post, filter))
+      )
+    );
+  }
+
+  filterSubmittedPosts(filter: Filter): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.api}/submitted`).pipe(
         map((post: Post[]) => post.filter(post => this.isPostMatchingFilter(post, filter)))
     );
   }

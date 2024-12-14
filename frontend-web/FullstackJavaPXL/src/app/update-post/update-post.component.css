@@ -54,21 +54,17 @@ h1{
     font-style: italic;
 }
 
-.select-container {
+select{
+    text-align: left;
+    background-color: #dedede;
+    color: black;
     margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.select-container label {
-    margin-right: 0px;  
-}
-
-.select-container input{
-    width: auto;
-    margin-top: 7px;
-    accent-color: #ababab;
+    height: 2%;
+    width: 52%;
+    border: 2px solid #ababab;
+    
+    padding-top: 5px;
+    padding-bottom: 3px;
 }
 
 button{

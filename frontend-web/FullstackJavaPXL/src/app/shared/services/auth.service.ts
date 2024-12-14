@@ -5,34 +5,49 @@ import { User } from '../models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedInUser: User | null = null;
-
-  private readonly users: User[] = [
-    { email: 'redacteur@gmail.com', password: 'password123', role: 'Redacteur' },
-    { email: 'gebruiker@gmail.com', password: 'password123', role: 'Gebruiker' },
+  private users: User[] = [
+    { username: 'gebruiker1', password: 'azerty', role: 'Gebruiker', id: 1 },
+    { username: 'gebruiker2', password: 'azerty', role: 'Gebruiker', id: 2 },
+    { username: 'redacteur1', password: 'azerty', role: 'Redacteur', id: 3 },
+    { username: 'redacteur2', password: 'azerty', role: 'Redacteur', id: 4 },
   ];
 
-  login(email: string, password: string): boolean {
-    const user = this.users.find((u) => u.email === email && u.password === password);
+  private currentUser: User | null = null;
 
-    if (user) {
-      this.loggedInUser = user;
-      return true;
-    }
-
-    this.loggedInUser = null;
-    return false;
-  }
-  
-  logout(): void {
-    this.loggedInUser = null;
+  private saveCurrentUser() {
+    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
   }
 
-  isLoggedIn(): boolean {
-    return !!this.loggedInUser;
+  getUsers(): User[] {
+    return this.users;
+  }
+
+  getCurrentUser(): User | null {
+    const storedUserData = localStorage.getItem('currentUser');
+    return storedUserData ? JSON.parse(storedUserData) as User : null;
   }
 
   getRole(): string | null {
-    return this.loggedInUser?.role || null;
+    const currentUser = this.getCurrentUser();
+    return currentUser ? currentUser.role : null;
+  }
+
+  setCurrentUser(username: string, password: string) {
+    const user = this.users.find((u) => u.username === username);
+    if (user) {
+      if (user.password === password) {
+        this.currentUser = user;
+        this.saveCurrentUser();
+      } else {
+        throw new Error('Incorrect password');
+      }
+    } else {
+      throw new Error('User not found');
+    }
+  }
+
+  logout(): void {
+    localStorage.removeItem('currentUser');
+    this.currentUser = null;
   }
 }

@@ -1,13 +1,11 @@
 <div class="loginFormUi">
     <h1>Log In</h1>
-    <input [(ngModel)]="email" placeholder="Email" />
+    <input [(ngModel)]="username" placeholder="Username" />
     <input [(ngModel)]="password" placeholder="Password" type="password" />
+    @if(loginError){
+        <p class="error">{{ loginError }}</p>
+    }
     <button (click)="login()">Login</button>
-    @if(loginFailed){
-        <p class="error">Invalid credentials!</p>
-    }
-    @if(authService.isLoggedIn()){
-        <p class="success">Logged in as: {{ authService.getRole() }}</p>
-    }
-</div>
+  </div>
+  
 

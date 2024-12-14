@@ -1,0 +1,4 @@
+<app-post-filter (filterChanged)="handleFilter($event)"></app-post-filter>
+@for(post of posts; track post.id){
+    <app-post-item [post]="post"></app-post-item>
+}

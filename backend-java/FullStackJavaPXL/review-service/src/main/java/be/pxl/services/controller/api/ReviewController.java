@@ -17,14 +17,14 @@ public class ReviewController {
     private static final Logger log = LoggerFactory.getLogger(ReviewController.class);
 
     @GetMapping("/{id}")
-    public ResponseEntity getReviewById(Long id){
+    public ResponseEntity getReviewById(@PathVariable Long id){
         log.info("Calling endpoint [GET] /api/review/" + id);
         return new ResponseEntity(reviewService.getReviewsByPostId(id), HttpStatus.OK);
     }
 
     @PostMapping("/{id}/approve")
     public ResponseEntity approvedPost(@PathVariable Long id){
-        log.info("Calling endpoint [POST] /api/review/" + id + "approve");
+        log.info("Calling endpoint [POST] /api/review/" + id + "/approve");
         reviewService.approvePost(id);
         return new ResponseEntity(HttpStatus.OK);
     }

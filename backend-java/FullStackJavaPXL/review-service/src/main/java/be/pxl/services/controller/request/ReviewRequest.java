@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewRequest { ;
+public class ReviewRequest {
+    private Long postId;
     private String feedback;
 }

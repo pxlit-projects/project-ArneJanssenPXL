@@ -19,7 +19,7 @@
 input{
     text-align: left;
     background-color: #dedede;
-    color: white;
+    color: black;
     margin-top: 10px;
     height: 20px;
     width: 50%;
@@ -29,7 +29,7 @@ input{
 textarea{
     text-align: left;
     background-color: #dedede;
-    color: white;
+    color: black;
     margin-top: 10px;
     height: 100px;
     width: 50%;
@@ -40,12 +40,12 @@ textarea{
 }
 
 input::placeholder {
-    color: white; 
+    color: black; 
     opacity: 1; 
 }
 
 textarea::placeholder{
-    color: white;
+    color: black;
     opacity: 1;
 }
 

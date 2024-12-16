@@ -4,17 +4,35 @@
         <h3>Categorie: {{ post.category }}</h3>
         <p>{{ post.content }}</p>
         <p>{{ post.author }} - {{ post.datePublished | date: 'dd/MM/yyyy'}}</p>
-        @if(isRedacteur()){
+        @if(isRedacteur() && post.postStatus != "SUBMITTED" && post.postStatus != "PUBLISHED" && post.postStatus != "APPROVED"){
             <button [routerLink]="['/update-post', post.id]" routerLinkLinkActive="router-link-active">Bewerk</button>
+            <br>
         }
-        <br>
-        @if(post.postStatus == "SUBMITTED"){
-            <button class="approve-button">
-                KEUR GOED
-            </button>
-            <button class="reject-button">
-                KEUR AF
-            </button>
+        @if(post.postStatus == "SUBMITTED") {
+            <button class="approve-button" (click)="approvePost()">KEUR GOED</button>
+            <button class="reject-button" (click)="rejectPost()">KEUR AF</button>
+
+            <form [formGroup]="feedbackForm">
+                <textarea formControlName="feedback" placeholder="Type hier de feedback, indien nodig."></textarea>
+            </form>
+
+        }
+        @if(isRedacteur() && post.postStatus == "APPROVED"){
+            <button (click)="publishPost()">Publiceer</button>
         }
     </div>
+    @if(post.postStatus == "REJECTED"){
+        @for(review of reviews$ | async; track review.id){
+            <div class="review">
+                <h1>{{review.reviewer}}</h1>
+                <p>{{review.dateCreated | date: 'dd/MM/yyyy'}}</p>
+                @if(review.feedback == ""){
+                    <p>Geen reden gegeven...</p>
+                }
+                @else{
+                    <p>{{review.feedback}}</p>
+                }
+            </div>
+        }
+    }
 }

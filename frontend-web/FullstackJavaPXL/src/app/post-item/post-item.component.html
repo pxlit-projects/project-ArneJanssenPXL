@@ -4,5 +4,7 @@
     <h3>Categorie: {{ post.category }}</h3>
     <p>{{ post.content }}</p>
     <p>{{ post.author }} - {{ post.datePublished | date: 'dd/MM/yyyy'}}</p>
-    <button [routerLink]="['/post', post.id]" routerLinkLinkActive="router-link-active">Details</button>
+    @if(post.postStatus != "PUBLISHED"){
+        <button [routerLink]="['/post', post.id]" routerLinkLinkActive="router-link-active">Details</button>
+    }
 </div>

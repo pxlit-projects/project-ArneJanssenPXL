@@ -91,3 +91,92 @@
 .post .reject-button:active {
     background-color: #d32f2f; 
 }
+
+textarea {
+    text-align: left;
+    background-color: #dedede;
+    color: black;
+    margin-top: 10px;
+    height: 100px;
+    width: 52%;
+    border: 2px solid #ababab;
+    padding: 10px; 
+    box-sizing: border-box; 
+    line-height: 1.5; 
+    resize: none; 
+}
+textarea::placeholder {
+    color: black;
+    opacity: 1;
+}
+
+.errorMessage{
+    color: red;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.review {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 35%;
+    margin: 15px auto;
+    padding: 12px;
+    text-align: left;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif; 
+    color: #444;
+    line-height: 1.4;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.review:hover {
+    transform: translateY(-3px); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.review h1 {
+    font-size: 1.4em;
+    margin-bottom: 8px;
+    color: #333;
+    text-align: center;
+}
+
+.review p {
+    font-size: 0.9em;
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.review p:last-of-type {
+    font-style: italic; 
+    color: #666;
+    text-align: left;
+}
+
+.review button {
+    padding: 8px 16px;
+    font-size: 0.9em;
+    font-family: Arial, sans-serif; 
+    color: #fff; 
+    background-color: #444444; 
+    border: none;
+    border-radius: 6px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+    margin-top: 10px; 
+    width: 30%;
+}
+
+.review button:hover {
+    background-color: #333333; 
+    transform: scale(1.05); 
+}
+
+.review button:active {
+    background-color: #222222;
+    transform: scale(1); 
+}

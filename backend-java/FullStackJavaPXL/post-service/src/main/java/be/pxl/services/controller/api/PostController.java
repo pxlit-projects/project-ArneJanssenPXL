@@ -62,7 +62,7 @@ public class PostController {
     }
 
     @PostMapping("/{id}/publish")
-    public ResponseEntity publishPost(@PathVariable Long id, @RequestHeader String author, @RequestHeader int authorId) {
+    public ResponseEntity publishPost(@PathVariable Long id, @RequestHeader int authorId) {
         log.info("Calling endpoint [POST] /api/post/{}/publish with params: {} in PathVariable", id, id);
         return new ResponseEntity(postService.publishPost(id, authorId), HttpStatus.OK);
     }

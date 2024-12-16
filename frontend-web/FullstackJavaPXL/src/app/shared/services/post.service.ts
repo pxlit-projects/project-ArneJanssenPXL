@@ -45,6 +45,15 @@ export class PostService {
     });
   }
 
+  publishPost(id: number, authorId: number): Observable<void> {
+    return this.http.post<void>(`${this.api}/${id}/publish`, null, {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'authorId': authorId.toString(),
+        }),
+    });
+  }
+
   getPostById(id: number): Observable<Post>{
     return this.http.get<Post>(`${this.api}/${id}`);
   }

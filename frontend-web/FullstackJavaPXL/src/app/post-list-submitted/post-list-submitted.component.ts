@@ -4,6 +4,8 @@ import { Post } from '../shared/models/post.model';
 import { Filter } from '../shared/models/filter.model';
 import { PostItemComponent } from '../post-item/post-item.component';
 import { PostFilterComponent } from '../post-filter/post-filter.component';
+import { AuthService } from '../shared/services/auth.service';
+import { User } from '../shared/models/user.model';
 
 @Component({
   selector: 'app-post-list-submitted',
@@ -14,10 +16,13 @@ import { PostFilterComponent } from '../post-filter/post-filter.component';
 })
 export class PostListSubmittedComponent implements OnInit{
   postService: PostService = inject(PostService);
+  authService: AuthService = inject(AuthService);
   posts: Post[] = [];
+  user: User | null | undefined;
 
   ngOnInit(): void {
-    this.postService.getAllSubmittedPosts().subscribe({
+    this.user = this.authService.getCurrentUser();
+    this.postService.getAllSubmittedPosts(this.user!.username, this.user!.id, this.user!.role).subscribe({
       next: (posts) => {
         this.posts = posts;
       }
@@ -25,7 +30,7 @@ export class PostListSubmittedComponent implements OnInit{
   }
 
   handleFilter(filter: Filter): void {
-    this.postService.filterSubmittedPosts(filter).subscribe({
+    this.postService.filterSubmittedPosts(this.user!.username, this.user!.id, this.user!.role, filter).subscribe({
       next: (posts) => {
         this.posts = posts;
       }

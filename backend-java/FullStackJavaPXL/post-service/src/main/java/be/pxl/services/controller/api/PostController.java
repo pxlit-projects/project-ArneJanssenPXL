@@ -19,16 +19,18 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createPost(@RequestBody PostRequest postRequest, @RequestHeader String author, @RequestHeader int authorId){
+    public void createPost(@RequestBody PostRequest postRequest, @RequestHeader String username, @RequestHeader int userId, @RequestHeader String role){
         log.info("Calling endpoint [POST] /api/post with params: {} in RequestBody", postRequest);
-        postService.createPost(postRequest, author, authorId);
+        postService.createPost(postRequest, username, userId, role);
     }
 
+    /*
     @GetMapping
     public ResponseEntity getAllPosts(){
         log.info("Calling endpoint [GET] /api/post");
         return new ResponseEntity(postService.getAllPosts(), HttpStatus.OK);
     }
+    */
 
     @GetMapping("/published")
     public ResponseEntity getAllPublishedPosts(){
@@ -37,33 +39,33 @@ public class PostController {
     }
 
     @GetMapping("/submitted")
-    public ResponseEntity getAllSubmittedPosts(){
+    public ResponseEntity getAllSubmittedPosts(@RequestHeader String username, @RequestHeader int userId, @RequestHeader String role){
         log.info("Calling endpoint [GET] /api/post/submitted");
-        return new ResponseEntity(postService.getAllSubmittedPosts(), HttpStatus.OK);
+        return new ResponseEntity(postService.getAllSubmittedPosts(username, userId, role), HttpStatus.OK);
     }
 
     @GetMapping("/filter/{postStatus}")
-    public ResponseEntity getAllPostsByAuthorIdAndStatus(@RequestHeader int authorId, @PathVariable PostStatus postStatus){
+    public ResponseEntity getAllPostsByAuthorIdAndStatus(@RequestHeader String username, @RequestHeader int userId, @RequestHeader String role, @PathVariable PostStatus postStatus){
         log.info("Calling endpoint [GET] /api/post/filter/{}", postStatus.name());
-        return new ResponseEntity(postService.getAllPostsByAuthorIdAndPostStatus(authorId, postStatus), HttpStatus.OK);
+        return new ResponseEntity(postService.getAllPostsByAuthorIdAndPostStatus(username, userId, role, postStatus), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updatePost(@PathVariable Long id, @RequestBody PostRequest postRequest, @RequestHeader String author, @RequestHeader int authorId){
+    public ResponseEntity updatePost(@PathVariable Long id, @RequestBody PostRequest postRequest, @RequestHeader String username, @RequestHeader int userId, @RequestHeader String role){
         log.info("Calling endpoint [PUT] /api/post/{} with params: {} in PathVariable & with params: {} in RequestBody", id, id, postRequest);
 
-        return new ResponseEntity(postService.updatePost(id, postRequest, author, authorId), HttpStatus.OK);
+        return new ResponseEntity(postService.updatePost(id, postRequest, username, userId, role), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getPostById(@PathVariable Long id){
+    public ResponseEntity getPostById(@PathVariable Long id, @RequestHeader String username, @RequestHeader int userId, @RequestHeader String role){
         log.info("Calling endpoint [GET] /api/post/{} with params: {} in PathVariable", id, id);
-        return new ResponseEntity(postService.getPostById(id), HttpStatus.OK);
+        return new ResponseEntity(postService.getPostById(id, username, userId, role), HttpStatus.OK);
     }
 
     @PostMapping("/{id}/publish")
-    public ResponseEntity publishPost(@PathVariable Long id, @RequestHeader int authorId) {
+    public ResponseEntity publishPost(@PathVariable Long id, @RequestHeader String username, @RequestHeader int userId, @RequestHeader String role) {
         log.info("Calling endpoint [POST] /api/post/{}/publish with params: {} in PathVariable", id, id);
-        return new ResponseEntity(postService.publishPost(id, authorId), HttpStatus.OK);
+        return new ResponseEntity(postService.publishPost(id, username, userId, role), HttpStatus.OK);
     }
 }

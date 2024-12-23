@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface IReviewService {
     void approvePost(Long id);
-    void rejectPost(Long id, String reviewer, int reviewerId, ReviewRequest reviewRequest);
+    void rejectPost(Long id, String reviewer, int reviewerId, String role, ReviewRequest reviewRequest);
     List<ReviewResponse> getReviewsByPostId(Long id);
 }

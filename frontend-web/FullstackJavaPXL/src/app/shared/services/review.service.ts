@@ -22,12 +22,13 @@ export class ReviewService {
     );
   }
 
-  rejectPost(id: number, reviewer: string, reviewerId: number, reviewRequest: AddReview): Observable<void> {
+  rejectPost(id: number, reviewer: string, reviewerId: number, role: string, reviewRequest: AddReview): Observable<void> {
     return this.http.post<void>(`${this.api}/${id}/reject`, reviewRequest, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'reviewer': reviewer,
         'reviewerId': reviewerId.toString(),
+        'role': role
       }),
     });
   }

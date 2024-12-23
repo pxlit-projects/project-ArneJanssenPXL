@@ -1,17 +1,9 @@
-
 <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="postFormUi">
     <h1>Schrijf een post</h1>
     <input type="text" formControlName="title" placeholder="Titel"><br>
     @if (postForm.controls['title'].invalid && postForm.controls['title'].touched){
         <p class="errorMessage">Titel is vereist!</p>
     }
-
-    <!---
-    <input type="text" formControlName="author" placeholder="Auteur"><br>
-    @if (postForm.controls['author'].invalid && postForm.controls['author'].touched){
-        <p class="errorMessage">Auteur is vereist!</p>
-    }
-    --->
 
     <input type="text" formControlName="category" placeholder="Categorie"><br>
     @if (postForm.controls['category'].invalid && postForm.controls['category'].touched){

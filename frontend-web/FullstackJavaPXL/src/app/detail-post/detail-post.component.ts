@@ -28,7 +28,7 @@ export class DetailPostComponent implements OnInit , OnDestroy{
   reviewService: ReviewService = inject(ReviewService);
   router: Router = inject(Router);
 
-  post$: Observable<Post> = this.postService.getPostById(this.id);
+  post$: Observable<Post> | undefined;
   reviews$: Observable<Review[]> = this.reviewService.getReviewsById(this.id);
 
   user: User | null | undefined;
@@ -41,8 +41,10 @@ export class DetailPostComponent implements OnInit , OnDestroy{
 
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser();
+
+    this.post$ = this.postService.getPostById(this.id, this.user!.username, this.user!.id, this.user!.role);
+
     this.sub = this.reviews$.subscribe(reviews => {
-      console.log(reviews);
     });
   }
 
@@ -63,22 +65,21 @@ export class DetailPostComponent implements OnInit , OnDestroy{
       const feedback = this.feedbackForm.value.feedback;
       const reviewer = this.user!.username; 
       const reviewerId = this.user!.id;
+      const role = this.user!.role;
 
       const reviewRequest: AddReview = {
         postId: this.id, 
         feedback: feedback, 
       };
 
-      this.reviewService.rejectPost(this.id, reviewer, reviewerId, reviewRequest).subscribe(() => {
+      this.reviewService.rejectPost(this.id, reviewer, reviewerId, role, reviewRequest).subscribe(() => {
         this.router.navigate(['/submitted-posts']);
       });
     }
   }
 
   publishPost(): void {
-    const reviewerId = this.user!.id;
-
-    this.postService.publishPost(this.id, reviewerId).subscribe(() => {
+    this.postService.publishPost(this.id, this.user!.username, this.user!.id, this.user!.role).subscribe(() => {
       this.router.navigate(['/posts']);
     });
   }

@@ -11,17 +11,18 @@ import { PostListSubmittedComponent } from './post-list-submitted/post-list-subm
 import { PostConceptListComponent } from './post-concept-list/post-concept-list.component';
 import { PostApprovedListComponent } from './post-approved-list/post-approved-list.component';
 import { PostRejectedListComponent } from './post-rejected-list/post-rejected-list.component';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
     { path: '', component: WelcomeComponent }, 
     { path: 'home', component: WelcomeComponent }, 
-    { path: 'add-post', component: AddPostComponent, canDeactivate: [confirmLeaveAddPostGuard]}, 
+    { path: 'add-post', component: AddPostComponent, canDeactivate: [confirmLeaveAddPostGuard], canActivate: [authGuard]}, 
     { path: 'login', component: LoginComponent },
-    { path: 'post/:id', component: DetailPostComponent},
+    { path: 'post/:id', component: DetailPostComponent, canActivate: [authGuard]},
     { path: 'posts', component: PostListComponent},
-    { path: 'update-post/:id', component: UpdatePostComponent, canDeactivate: [confirmLeaveUpdatePostGuard]},
-    { path: 'submitted-posts', component: PostListSubmittedComponent},
-    { path: 'concept-posts', component: PostConceptListComponent},
-    { path: 'approved-posts', component: PostApprovedListComponent},
-    { path: 'rejected-posts', component: PostRejectedListComponent},
+    { path: 'update-post/:id', component: UpdatePostComponent, canDeactivate: [confirmLeaveUpdatePostGuard], canActivate: [authGuard]},
+    { path: 'submitted-posts', component: PostListSubmittedComponent, canActivate: [authGuard]},
+    { path: 'concept-posts', component: PostConceptListComponent, canActivate: [authGuard]},
+    { path: 'approved-posts', component: PostApprovedListComponent, canActivate: [authGuard]},
+    { path: 'rejected-posts', component: PostRejectedListComponent, canActivate: [authGuard]},
 ];

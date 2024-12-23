@@ -23,7 +23,7 @@ export class PostRejectedListComponent implements OnInit{
 
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser();
-    this.postService.getPostsByAuthorIdAndStatus(this.user!.id, PostStatus.REJECTED).subscribe({
+    this.postService.getPostsByAuthorIdAndStatus(this.user!.username, this.user!.id, this.user!.role, PostStatus.REJECTED).subscribe({
       next: (posts) => {
         this.posts = posts;
       }
@@ -31,7 +31,7 @@ export class PostRejectedListComponent implements OnInit{
   }
 
   handleFilter(filter: Filter): void {
-    this.postService.filterRejectedPosts(filter, this.user!.id).subscribe({
+    this.postService.filterRejectedPosts(filter, this.user!.username, this.user!.id, this.user!.role).subscribe({
       next: (posts) => {
         this.posts = posts;
       }

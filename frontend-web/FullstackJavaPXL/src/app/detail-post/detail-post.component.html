@@ -8,7 +8,8 @@
             <button [routerLink]="['/update-post', post.id]" routerLinkLinkActive="router-link-active">Bewerk</button>
             <br>
         }
-        @if(post.postStatus == "SUBMITTED") {
+
+        @if(post.postStatus == "SUBMITTED" && post.authorId != user?.id) {
             <button class="approve-button" (click)="approvePost()">KEUR GOED</button>
             <button class="reject-button" (click)="rejectPost()">KEUR AF</button>
 
@@ -17,6 +18,10 @@
             </form>
 
         }
+        @else if(post.postStatus == "SUBMITTED" && post.authorId == user?.id){
+            <h2 class="errorMessage">Je kan je eigen posts niet behandelen.</h2>
+        }
+
         @if(isRedacteur() && post.postStatus == "APPROVED"){
             <button (click)="publishPost()">Publiceer</button>
         }

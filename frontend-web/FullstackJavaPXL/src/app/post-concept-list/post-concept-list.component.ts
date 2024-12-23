@@ -23,7 +23,7 @@ export class PostConceptListComponent implements OnInit{
 
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser();
-    this.postService.getPostsByAuthorIdAndStatus(this.user!.id, PostStatus.CONCEPT).subscribe({
+    this.postService.getPostsByAuthorIdAndStatus(this.user!.username, this.user!.id, this.user!.role, PostStatus.CONCEPT).subscribe({
       next: (posts) => {
         this.posts = posts;
       }
@@ -31,7 +31,7 @@ export class PostConceptListComponent implements OnInit{
   }
 
   handleFilter(filter: Filter): void {
-    this.postService.filterConceptPosts(filter, this.user!.id).subscribe({
+    this.postService.filterConceptPosts(filter, this.user!.username, this.user!.id, this.user!.role).subscribe({
       next: (posts) => {
         this.posts = posts;
       }

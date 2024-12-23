@@ -8,6 +8,7 @@ import be.pxl.services.domain.PostStatus;
 import be.pxl.services.domain.Review;
 import be.pxl.services.exception.PostHasInvalidPostStatusException;
 import be.pxl.services.exception.PostNotFoundException;
+import be.pxl.services.exception.PostUnauthorizedException;
 import be.pxl.services.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -48,9 +49,9 @@ public class ReviewService implements IReviewService{
     }
 
     @Override
-    public void rejectPost(Long id, String reviewer, int reviewerId, ReviewRequest reviewRequest) {
+    public void rejectPost(Long id, String reviewer, int reviewerId, String role,  ReviewRequest reviewRequest) {
         log.info("Finding post with id: {}", id);
-        PostResponse post = postClient.getPostById(id);
+        PostResponse post = postClient.getPostById(id, reviewer, reviewerId, role);
         log.info("Post with id: {} found", id);
 
         log.info("Checking is post: {} exists", post.getId());
@@ -64,6 +65,11 @@ public class ReviewService implements IReviewService{
             throw new PostHasInvalidPostStatusException("Post is not submitted");
         }
         log.info("Post {} has been submitted", post.getId());
+
+        log.info("Checking if user: {} is the owner: {}", reviewerId, post.getAuthorId());
+        if (post.getAuthorId() != reviewerId){
+            throw new PostUnauthorizedException("The reviewer: " + reviewerId + " is not the owner: " + post.getAuthorId());
+        }
 
         log.info("Sending a Rejected Message To Post-Service");
         rabbitTemplate.convertAndSend("rejectedPostQueue", id);

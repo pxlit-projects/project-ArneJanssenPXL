@@ -4,10 +4,7 @@ import be.pxl.services.controller.request.PostRequest;
 import be.pxl.services.controller.response.PostResponse;
 import be.pxl.services.domain.Post;
 import be.pxl.services.domain.PostStatus;
-import be.pxl.services.exception.PostNotApprovedException;
-import be.pxl.services.exception.PostNotFoundException;
-import be.pxl.services.exception.PostUnauthorizedPublicationException;
-import be.pxl.services.exception.PostUpdateForbiddenException;
+import be.pxl.services.exception.*;
 import be.pxl.services.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +25,7 @@ public class PostService implements IPostService{
         return PostResponse.builder()
                 .id(post.getId())
                 .author(post.getAuthor())
+                .authorId(post.getAuthorId())
                 .content(post.getContent())
                 .datePublished(post.getDatePublished())
                 .dateCreated(post.getDateCreated())
@@ -37,7 +36,13 @@ public class PostService implements IPostService{
     }
 
     @Override
-    public PostResponse createPost(PostRequest postRequest, String author, int authorId) {
+    public PostResponse createPost(PostRequest postRequest, String username, int userId, String role) {
+        log.info("Checking the role of the user");
+        if (!role.equals("Redacteur")){
+            throw new InvalidRoleException("Only users with role 'Redacteur' can create posts.");
+        }
+        log.info("Role is: {}", role);
+
         log.info("Creating post with post-request: {}", postRequest);
         Post post = Post.builder()
                 .content(postRequest.getContent())
@@ -46,8 +51,9 @@ public class PostService implements IPostService{
                 .postStatus(postRequest.getPostStatus())
                 .build();
 
-        post.setAuthor(author);
-        post.setAuthorId(authorId);
+        log.info("Setting author, authorId and dateCreated");
+        post.setAuthor(username);
+        post.setAuthorId(userId);
         post.setDateCreated(LocalDateTime.now());
 
         if (postRequest.getPostStatus() == PostStatus.PUBLISHED){
@@ -63,15 +69,21 @@ public class PostService implements IPostService{
     }
 
     @Override
-    public PostResponse publishPost(Long id, int authorId) {
+    public PostResponse publishPost(Long id, String username, int userId, String role) {
         log.info("Finding post with id: {}", id);
         Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("Post with id: " + id + " not found"));
 
-        log.info("Checking that author: {} is the owner", authorId);
-        if (post.getAuthorId() != authorId){
-            throw new PostUnauthorizedPublicationException("Post with id " + id + " cannot be published by user with id " + authorId);
+        log.info("Checking the role of the user");
+        if (!role.equals("Redacteur")){
+            throw new InvalidRoleException("Only users with role 'Redacteur' can create posts.");
         }
-        log.info("Author: {} is the owner", authorId);
+        log.info("Role is: {}", role);
+
+        log.info("Checking that user: {} with id: {} is the owner", username, userId);
+        if (post.getAuthorId() != userId){
+            throw new PostUnauthorizedPublicationException("Post with id " + id + " cannot be published by user with id " + userId);
+        }
+        log.info("Author: {}({}) is the owner", username, userId);
 
         log.info("Checking that post: {} is approved", post.getId());
         if (post.getPostStatus() != PostStatus.APPROVED){
@@ -91,6 +103,7 @@ public class PostService implements IPostService{
         return mapToPostResponse(post);
     }
 
+    /*
     @Override
     public List<PostResponse> getAllPosts() {
         log.info("Retrieving all posts");
@@ -98,6 +111,7 @@ public class PostService implements IPostService{
         log.info("Mapping {} To PostResponse", posts);
         return posts.stream().map(this::mapToPostResponse).toList();
     }
+    */
 
     @Override
     public List<PostResponse> getPublishedPosts() {
@@ -108,15 +122,27 @@ public class PostService implements IPostService{
     }
 
     @Override
-    public PostResponse updatePost(Long id, PostRequest postRequest, String author, int authorId) {
+    public PostResponse updatePost(Long id, PostRequest postRequest, String username, int userId, String role) {
         log.info("Finding post with id: {}", id);
         Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("Post with id: " + id + " was not found."));
 
-        log.info("Checking if log user is owner");
-        if (post.getAuthorId() != authorId){
+        log.info("Checking the role of the user");
+        if (!role.equals("Redacteur")){
+            throw new InvalidRoleException("Only users with role 'Redacteur' can create posts.");
+        }
+        log.info("Role is: {}", role);
+
+        log.info("Checking if user is owner");
+        if (post.getAuthorId() != userId){
             throw new PostUpdateForbiddenException("Post with id " + id + " cannot be edited because you're not the owner");
         }
         log.info("User is the owner");
+
+        log.info("Checking for correct postStatus");
+        if (post.getPostStatus() != PostStatus.CONCEPT && post.getPostStatus() != PostStatus.REJECTED){
+            throw new PostInvalidPostStatusException("Post with id " + id + " needs to be a concept or rejected.");
+        }
+        log.info("Post has appropriate PostStatus");
 
         log.info("Updating post properties");
         post.setContent(postRequest.getContent());
@@ -140,7 +166,13 @@ public class PostService implements IPostService{
     }
 
     @Override
-    public PostResponse getPostById(Long id) {
+    public PostResponse getPostById(Long id, String username, int userId, String role) {
+        log.info("Checking the role of the user");
+        if (!role.equals("Redacteur")){
+            throw new InvalidRoleException("Only users with role 'Redacteur' can create posts.");
+        }
+        log.info("Role is: {}", role);
+
         log.info("Finding post with id: {}", id);
         Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("Post with id: " + id + " does not exist"));
         log.info("Successfully found post with id: {}", id);
@@ -150,7 +182,13 @@ public class PostService implements IPostService{
     }
 
     @Override
-    public List<PostResponse> getAllSubmittedPosts() {
+    public List<PostResponse> getAllSubmittedPosts(String username, int userId, String role) {
+        log.info("Checking the role of the user");
+        if (!role.equals("Redacteur")){
+            throw new InvalidRoleException("Only users with role 'Redacteur' can create posts.");
+        }
+        log.info("Role is: {}", role);
+
         log.info("Retrieving all submitted posts");
         List<Post> posts = postRepository.findAllByPostStatus(PostStatus.SUBMITTED);
         log.info("Mapping {} To PostResponse", posts);
@@ -158,9 +196,15 @@ public class PostService implements IPostService{
     }
 
     @Override
-    public List<PostResponse> getAllPostsByAuthorIdAndPostStatus(int authorId, PostStatus postStatus) {
-        log.info("Retrieving all {} posts by author: {}", postStatus.name() , authorId);
-        List<Post> posts = postRepository.findByAuthorIdAndPostStatus(authorId, postStatus);
+    public List<PostResponse> getAllPostsByAuthorIdAndPostStatus(String username, int userId, String role, PostStatus postStatus) {
+        log.info("Checking the role of the user");
+        if (!role.equals("Redacteur")){
+            throw new InvalidRoleException("Only users with role 'Redacteur' can create posts.");
+        }
+        log.info("Role is: {}", role);
+
+        log.info("Retrieving all {} posts by author: {}", postStatus.name() , userId);
+        List<Post> posts = postRepository.findByAuthorIdAndPostStatus(userId, postStatus);
         log.info("Mapping {} To PostResponse", posts);
         return posts.stream().map(this::mapToPostResponse).toList();
     }

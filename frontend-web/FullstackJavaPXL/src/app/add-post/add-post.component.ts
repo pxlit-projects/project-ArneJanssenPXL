@@ -30,18 +30,12 @@ export class AddPostComponent implements OnInit{
 
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser();
-    if (!this.user) {
-      this.router.navigate(['/login']);
-    }
-    if (this.user!.role !== 'Redacteur') {
-      this.router.navigate(['/posts']);
-    }
   }
 
   onSubmit() {
     if (this.postForm.valid) {
       const newPost: Post = { ...this.postForm.value };
-      this.postService.createPost(newPost, this.user!.username, this.user!.id).subscribe(() => {
+      this.postService.createPost(newPost, this.user!.username, this.user!.id, this.user!.role).subscribe(() => {
         this.postForm.reset();
         this.router.navigate(['/posts']);
       });

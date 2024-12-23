@@ -24,7 +24,7 @@ export class UpdatePostComponent implements OnInit{
   user: User | null | undefined;
   errorMessage: string = '';
 
-  post$: Observable<Post> = this.postService.getPostById(this.id);
+  post$: Observable<Post> | undefined;
 
   updateForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
@@ -42,6 +42,8 @@ export class UpdatePostComponent implements OnInit{
       this.router.navigate(['/posts']);
     }
 
+    this.post$ = this.postService.getPostById(this.id, this.user!.username, this.user!.id, this.user!.role);
+
     this.post$.subscribe((post) => {
       this.updateForm.patchValue({
         title: post.title,
@@ -55,7 +57,7 @@ export class UpdatePostComponent implements OnInit{
   onSubmit(): void {
     if (this.updateForm.valid) {
         const updatedPost: Post = { ...this.updateForm.value };
-        this.postService.updatePost(this.id, updatedPost, this.user!.username, this.user!.id).subscribe({
+        this.postService.updatePost(this.id, updatedPost, this.user!.username, this.user!.id, this.user!.role).subscribe({
             next: () => {
                 this.updateForm.reset();
                 this.router.navigate(['/posts']);

@@ -7,15 +7,14 @@ import be.pxl.services.domain.PostStatus;
 import java.util.List;
 
 public interface IPostService {
-    PostResponse createPost(PostRequest postRequest, String author, int authorId);
-    PostResponse publishPost(Long id, int authorId);
+    PostResponse createPost(PostRequest postRequest, String username, int userId, String role);
+    PostResponse publishPost(Long id, String username, int userId, String role);
 
-    List<PostResponse> getAllPosts();
-    //List<PostResponse> getConceptPosts();
+    //List<PostResponse> getAllPosts();
     List<PostResponse> getPublishedPosts();
-    PostResponse getPostById(Long id);
-    List<PostResponse> getAllSubmittedPosts();
-    List<PostResponse> getAllPostsByAuthorIdAndPostStatus(int authorId, PostStatus postStatus);
+    PostResponse getPostById(Long id, String username, int userId, String role);
+    List<PostResponse> getAllSubmittedPosts(String username, int userId, String role);
+    List<PostResponse> getAllPostsByAuthorIdAndPostStatus(String username, int userId, String role, PostStatus postStatus);
 
-    PostResponse updatePost(Long id, PostRequest postRequest, String author, int authorId);
+    PostResponse updatePost(Long id, PostRequest postRequest, String username, int userId, String role);
 }

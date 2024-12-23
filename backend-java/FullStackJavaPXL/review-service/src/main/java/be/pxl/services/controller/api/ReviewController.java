@@ -30,9 +30,9 @@ public class ReviewController {
     }
 
     @PostMapping("/{id}/reject")
-    public ResponseEntity rejectPost(@PathVariable Long id, @RequestHeader String reviewer, @RequestHeader int reviewerId, @RequestBody ReviewRequest reviewRequest){
+    public ResponseEntity rejectPost(@PathVariable Long id, @RequestHeader String reviewer, @RequestHeader int reviewerId, @RequestHeader String role, @RequestBody ReviewRequest reviewRequest){
         log.info("Calling endpoint [POST] /api/review/" + id + "reject");
-        reviewService.rejectPost(id, reviewer, reviewerId, reviewRequest);
+        reviewService.rejectPost(id, reviewer, reviewerId, role, reviewRequest);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

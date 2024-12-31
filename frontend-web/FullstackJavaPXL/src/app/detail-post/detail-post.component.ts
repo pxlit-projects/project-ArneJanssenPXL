@@ -10,11 +10,15 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { User } from '../shared/models/user.model';
 import { AddReview } from '../shared/models/addReview.model';
 import { Review } from '../shared/models/review.model';
+import { CommentService } from '../shared/services/comment.service';
+import { Comment } from '../shared/models/comment.model';
+import { MatIconModule } from '@angular/material/icon';
+import { AddComment } from '../shared/models/addComment.model';
 
 @Component({
   selector: 'app-detail-post',
   standalone: true,
-  imports: [AsyncPipe, CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [AsyncPipe, CommonModule, RouterLink, ReactiveFormsModule, MatIconModule],
   templateUrl: './detail-post.component.html',
   styleUrl: './detail-post.component.css'
 })
@@ -26,10 +30,12 @@ export class DetailPostComponent implements OnInit , OnDestroy{
 
   authService: AuthService = inject(AuthService);
   reviewService: ReviewService = inject(ReviewService);
+  commentService: CommentService = inject(CommentService);
   router: Router = inject(Router);
 
   post$: Observable<Post> | undefined;
   reviews$: Observable<Review[]> = this.reviewService.getReviewsById(this.id);
+  comments$: Observable<Comment[]> = this.commentService.getCommentsById(this.id);
 
   user: User | null | undefined;
 
@@ -39,12 +45,29 @@ export class DetailPostComponent implements OnInit , OnDestroy{
     feedback: [''],
   });
 
+  commentForm: FormGroup = this.fb.group({
+    comment: ['', Validators.required],
+  });
+
+  showCommentForm: boolean = false;
+
+  editCommentForm: FormGroup = this.fb.group({
+    text: ['', Validators.required],
+  });
+  editCommentId: number | null = null;
+
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser();
-
-    this.post$ = this.postService.getPostById(this.id, this.user!.username, this.user!.id, this.user!.role);
+    if (this.user){
+      this.post$ = this.postService.getPostById(this.id, this.user!.username, this.user!.id, this.user!.role);
+    }
+    else{
+      this.post$ = this.postService.getPostById(this.id);
+    }
 
     this.sub = this.reviews$.subscribe(reviews => {
+    });
+    this.sub = this.comments$.subscribe(comments => {
     });
   }
 
@@ -86,5 +109,70 @@ export class DetailPostComponent implements OnInit , OnDestroy{
   
   isRedacteur(): boolean {
     return this.authService.getRole() === 'Redacteur';
+  }
+
+  hasRole() : boolean {
+    if (this.authService.getRole() !== "" && this.authService.getRole() !== null){
+      return true;
+    }
+    return false;
+  }
+
+  toggleCommentForm(): void {
+    this.showCommentForm = !this.showCommentForm;
+  }
+
+  submitComment(): void {
+    if (this.commentForm.valid && this.user) {
+      const commentRequest: AddComment = {
+        postId: this.id,
+        text: this.commentForm.value.comment,
+      };
+
+      this.commentService
+        .createComment(commentRequest, this.user.username, this.user.id, this.user.role)
+        .subscribe(() => {
+          this.comments$ = this.commentService.getCommentsById(this.id);
+          this.commentForm.reset();
+          this.showCommentForm = false;
+        }
+      );
+    }
+  }
+
+  enableEditComment(comment: Comment): void {
+    this.editCommentId = comment.id;
+    this.editCommentForm.setValue({ text: comment.text });
+  }
+
+  cancelEdit(): void {
+    this.editCommentId = null;
+    this.editCommentForm.reset();
+  }
+
+  updateComment(commentId: number): void {
+    if (this.editCommentForm.valid && this.user) {
+      const updatedComment: AddComment = {
+        postId: this.id,
+        text: this.editCommentForm.value.text,
+      };
+
+      this.commentService
+        .updateComment(commentId, updatedComment, this.user.username, this.user.id, this.user.role)
+        .subscribe(() => {
+          this.comments$ = this.commentService.getCommentsById(this.id); 
+          this.editCommentId = null;
+        });
+    }
+  }
+
+  deleteComment(commentId: number): void {
+    if (this.user) {
+      this.commentService
+        .deleteComment(commentId, this.user.username, this.user.id, this.user.role)
+        .subscribe(() => {
+          this.comments$ = this.commentService.getCommentsById(this.id); 
+        });
+    }
   }
 }

@@ -180,3 +180,178 @@ textarea::placeholder {
     background-color: #222222;
     transform: scale(1); 
 }
+
+.comment {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 35%;
+    margin: 15px auto;
+    padding: 12px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    color: #444;
+    line-height: 1.4;
+    position: relative;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.comment:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comment p {
+    margin: 0;
+    padding: 5px 0;
+}
+
+.comment-commenter {
+    font-size: 0.9em;
+    color: #666;
+    top: 10px;
+    right: 10px;
+    margin: 0;
+    text-align: left;
+}
+
+.comment-text {
+    font-size: 1em;
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+    padding: 5px 0;
+}
+
+.comment .buttons {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    display: flex;
+    gap: 5px;
+}
+
+.comment .buttons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #555;
+    transition: color 0.2s;
+}
+
+.comment .buttons button:hover {
+    color: #000;
+}
+
+.comment .buttons .edit {
+    font-family: 'Material Icons';
+    content: "edit";
+}
+
+.comment .buttons .delete {
+    font-family: 'Material Icons';
+    content: "delete";
+}
+
+.create-comment-button{
+    background: #f9f9f9;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #555;
+    transition: color 0.2s;
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: center;
+    display: block; 
+    margin: 5px auto; 
+    padding: 5px;
+}
+
+.commentForm {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    margin: 20px auto; 
+    width: 72%; 
+}
+
+.commentForm textarea {
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.commentForm button {
+    background: #f9f9f9;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #555;
+    transition: color 0.2s;
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: center;
+    display: block; 
+    margin: 5px auto; 
+    padding: 5px;
+}
+
+.edit-comment-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.edit-comment-form textarea {
+    border: 2px solid #ababab;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    color: black;
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    line-height: 1.5;
+    resize: none;
+}
+
+.edit-comment-form textarea::placeholder {
+    color: black;
+    opacity: 1;
+}
+
+.edit-comment-form button {
+    background: #f9f9f9;
+    border: 1px solid black;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #555;
+    border-radius: 5px;
+    text-align: center;
+    padding: 5px;
+    transition: color 0.2s, background-color 0.3s ease;
+}
+
+.edit-comment-form .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; 
+    width: 100%;
+}
+
+.edit-comment-form button:hover {
+    color: #000;
+    background-color: #e0e0e0;
+}

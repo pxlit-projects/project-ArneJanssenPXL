@@ -167,11 +167,11 @@ public class PostService implements IPostService{
 
     @Override
     public PostResponse getPostById(Long id, String username, int userId, String role) {
-        log.info("Checking the role of the user");
+        /*log.info("Checking the role of the user");
         if (!role.equals("Redacteur")){
             throw new InvalidRoleException("Only users with role 'Redacteur' can create posts.");
         }
-        log.info("Role is: {}", role);
+        log.info("Role is: {}", role);*/
 
         log.info("Finding post with id: {}", id);
         Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("Post with id: " + id + " does not exist"));

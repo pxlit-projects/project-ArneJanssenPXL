@@ -67,7 +67,7 @@ export class PostService {
     });
   }
 
-  getPostById(id: number, username: string, userId: number, role: string): Observable<Post>{
+  getPostById(id: number, username: string="", userId: number=0, role: string=""): Observable<Post>{
     return this.http.get<Post>(`${this.api}/${id}`, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

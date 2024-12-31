@@ -18,7 +18,7 @@ export const routes: Routes = [
     { path: 'home', component: WelcomeComponent }, 
     { path: 'add-post', component: AddPostComponent, canDeactivate: [confirmLeaveAddPostGuard], canActivate: [authGuard]}, 
     { path: 'login', component: LoginComponent },
-    { path: 'post/:id', component: DetailPostComponent, canActivate: [authGuard]},
+    { path: 'post/:id', component: DetailPostComponent },
     { path: 'posts', component: PostListComponent},
     { path: 'update-post/:id', component: UpdatePostComponent, canDeactivate: [confirmLeaveUpdatePostGuard], canActivate: [authGuard]},
     { path: 'submitted-posts', component: PostListSubmittedComponent, canActivate: [authGuard]},

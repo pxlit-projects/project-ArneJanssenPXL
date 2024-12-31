@@ -26,6 +26,21 @@
             <button (click)="publishPost()">Publiceer</button>
         }
     </div>
+
+    @if(hasRole() && post.postStatus == "PUBLISHED"){
+        <button class="create-comment-button" (click)="toggleCommentForm()">COMMENT AANMAKEN</button>
+
+        @if (showCommentForm) {
+            <form [formGroup]="commentForm" class="commentForm">
+                <textarea formControlName="comment" placeholder="Schrijf je comment..."></textarea><br>
+                @if (commentForm.controls['comment'].invalid && commentForm.controls['comment'].touched){
+                    <p class="errorMessage">Comment info is vereist</p>
+                }
+                <button type="button" (click)="submitComment()">PLAATS COMMENT</button>
+            </form>
+        }
+    }
+
     @if(post.postStatus == "REJECTED"){
         @for(review of reviews$ | async; track review.id){
             <div class="review">
@@ -40,4 +55,37 @@
             </div>
         }
     }
+
+    @if(post.postStatus == "PUBLISHED"){
+        @for(comment of comments$ | async; track comment.id){
+            <div class="comment">
+                <p class="comment-commenter">{{comment.commenter}} - {{comment.dateCreated | date: 'dd/MM/yyyy'}}</p>
+                @if(editCommentId === comment.id){
+                    <form [formGroup]="editCommentForm" class="edit-comment-form">
+                        <textarea formControlName="text" placeholder="Update je comment..."></textarea><br>
+                        @if (editCommentForm.controls['text'].invalid && editCommentForm.controls['text'].touched){
+                            <p class="errorMessage">Comment info is vereist</p>
+                        }
+                        <div class="button-container">
+                            <button type="button" (click)="updateComment(comment.id)">UPDATE COMMENT</button>
+                            <button type="button" (click)="cancelEdit()">ANNULEREN</button>
+                        </div>
+                    </form>
+                }
+                @else{
+                    <p class="comment-text">{{comment.text}}</p>
+                    @if(comment.commenterId == user?.id){
+                        <div class="buttons">
+                            <button mat-icon-button class="edit" (click)="enableEditComment(comment)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button class="delete" (click)="deleteComment(comment.id)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    } 
 }

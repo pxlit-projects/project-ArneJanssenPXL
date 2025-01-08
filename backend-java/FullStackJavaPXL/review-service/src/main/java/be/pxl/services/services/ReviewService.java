@@ -8,7 +8,6 @@ import be.pxl.services.domain.PostStatus;
 import be.pxl.services.domain.Review;
 import be.pxl.services.exception.PostHasInvalidPostStatusException;
 import be.pxl.services.exception.PostNotFoundException;
-import be.pxl.services.exception.PostUnauthorizedException;
 import be.pxl.services.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -54,7 +53,7 @@ public class ReviewService implements IReviewService{
         PostResponse post = postClient.getPostById(id, reviewer, reviewerId, role);
         log.info("Post with id: {} found", id);
 
-        log.info("Checking is post: {} exists", post.getId());
+        log.info("Checking if post: {} exists", id);
         if (post == null){
             throw new PostNotFoundException("Post with id: " + id + " does not exist");
         }

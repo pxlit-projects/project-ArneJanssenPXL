@@ -1,0 +1,138 @@
+2025-01-08T20:12:17.595+0100 INFO               [main]                         be.pxl.services.ReviewTests   - Starting ReviewTests using Java 21.0.2 with PID 39088 (started by Arne in C:\Users\Arne\Documents\PXL_VIERDE_JAAR\1_FullstackJava\Project\project-ArneJanssenPXL\backend-java\FullStackJavaPXL\review-service)
+2025-01-08T20:12:17.597+0100 DEBUG              [main]                         be.pxl.services.ReviewTests   - Running with Spring Boot v3.3.5, Spring v6.1.14
+2025-01-08T20:12:17.598+0100 INFO               [main]                         be.pxl.services.ReviewTests   - No active profile set, falling back to 1 default profile: "default"
+2025-01-08T20:12:26.116+0100 INFO               [main]                         be.pxl.services.ReviewTests   - Started ReviewTests in 9.961 seconds (process running for 33.688)
+2025-01-08T20:12:26.431+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1/approve
+2025-01-08T20:12:26.431+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Sending a Approved Message To Post-Service
+2025-01-08T20:12:26.752+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [GET] /api/review/1
+2025-01-08T20:12:26.752+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Retrieving all review
+2025-01-08T20:12:26.789+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Mapping [Review(id=1, postId=1, feedback=Feedback 1, dateCreated=2025-01-08T20:12:26.647736, reviewer=Reviewer1, reviewerId=1), Review(id=2, postId=1, feedback=Feedback 2, dateCreated=2025-01-08T20:12:26.647736, reviewer=Reviewer2, reviewerId=2)] To ReviewResponse
+2025-01-08T20:12:26.985+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1reject
+2025-01-08T20:12:26.986+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Finding post with id: 1
+2025-01-08T20:12:26.992+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post with id: 1 found
+2025-01-08T20:12:26.992+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking is post: 1 exists
+2025-01-08T20:12:26.992+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 does exist
+2025-01-08T20:12:26.992+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking if post: 1 is submitted
+2025-01-08T20:12:26.992+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 has been submitted
+2025-01-08T20:12:26.992+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Sending a Rejected Message To Post-Service
+2025-01-08T20:12:26.993+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Building the review object.
+2025-01-08T20:12:26.993+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Saving review (Review(id=null, postId=1, feedback=Post needs improvement, dateCreated=2025-01-08T20:12:26.993879800, reviewer=John Doe, reviewerId=123)) in repository
+2025-01-08T20:12:27.009+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Successfully saved review with id: 3
+2025-01-08T20:32:56.292+0100 INFO               [main]                         be.pxl.services.ReviewTests   - Starting ReviewTests using Java 21.0.2 with PID 40252 (started by Arne in C:\Users\Arne\Documents\PXL_VIERDE_JAAR\1_FullstackJava\Project\project-ArneJanssenPXL\backend-java\FullStackJavaPXL\review-service)
+2025-01-08T20:32:56.294+0100 DEBUG              [main]                         be.pxl.services.ReviewTests   - Running with Spring Boot v3.3.5, Spring v6.1.14
+2025-01-08T20:32:56.296+0100 INFO               [main]                         be.pxl.services.ReviewTests   - No active profile set, falling back to 1 default profile: "default"
+2025-01-08T20:33:05.722+0100 INFO               [main]                         be.pxl.services.ReviewTests   - Started ReviewTests in 10.892 seconds (process running for 39.853)
+2025-01-08T21:26:31.034+0100 INFO               [main]                         be.pxl.services.ReviewTests   - Starting ReviewTests using Java 21.0.2 with PID 9420 (started by Arne in C:\Users\Arne\Documents\PXL_VIERDE_JAAR\1_FullstackJava\Project\project-ArneJanssenPXL\backend-java\FullStackJavaPXL\review-service)
+2025-01-08T21:26:31.036+0100 DEBUG              [main]                         be.pxl.services.ReviewTests   - Running with Spring Boot v3.3.5, Spring v6.1.14
+2025-01-08T21:26:31.037+0100 INFO               [main]                         be.pxl.services.ReviewTests   - No active profile set, falling back to 1 default profile: "default"
+2025-01-08T21:26:38.986+0100 INFO               [main]                         be.pxl.services.ReviewTests   - Started ReviewTests in 9.188 seconds (process running for 85.756)
+2025-01-08T21:26:39.291+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1reject
+2025-01-08T21:26:39.291+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Finding post with id: 1
+2025-01-08T21:26:39.296+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post with id: 1 found
+2025-01-08T21:26:39.296+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking is post: 1 exists
+2025-01-08T21:26:39.296+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 does exist
+2025-01-08T21:26:39.297+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking if post: 1 is submitted
+2025-01-08T21:26:39.334+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1reject
+2025-01-08T21:26:39.335+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Finding post with id: 1
+2025-01-08T21:26:39.335+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post with id: 1 found
+2025-01-08T21:26:39.335+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking is post: 1 exists
+2025-01-08T21:26:39.335+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 does exist
+2025-01-08T21:26:39.335+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking if post: 1 is submitted
+2025-01-08T21:26:39.335+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 has been submitted
+2025-01-08T21:26:39.335+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Sending a Rejected Message To Post-Service
+2025-01-08T21:26:39.482+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Building the review object.
+2025-01-08T21:26:39.483+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Saving review (Review(id=null, postId=1, feedback=Post needs improvement, dateCreated=2025-01-08T21:26:39.483035, reviewer=John Doe, reviewerId=123)) in repository
+2025-01-08T21:26:39.578+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Successfully saved review with id: 1
+2025-01-08T21:26:39.705+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [GET] /api/review/1
+2025-01-08T21:26:39.705+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Retrieving all review
+2025-01-08T21:26:39.751+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Mapping [Review(id=2, postId=1, feedback=Feedback 1, dateCreated=2025-01-08T21:26:39.678938, reviewer=Reviewer1, reviewerId=1), Review(id=3, postId=1, feedback=Feedback 2, dateCreated=2025-01-08T21:26:39.678938, reviewer=Reviewer2, reviewerId=2)] To ReviewResponse
+2025-01-08T21:26:39.886+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1/approve
+2025-01-08T21:26:39.887+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Sending a Approved Message To Post-Service
+2025-01-08T21:29:35.568+0100 INFO               [main]                         be.pxl.services.ReviewTests   - Starting ReviewTests using Java 21.0.2 with PID 6788 (started by Arne in C:\Users\Arne\Documents\PXL_VIERDE_JAAR\1_FullstackJava\Project\project-ArneJanssenPXL\backend-java\FullStackJavaPXL\review-service)
+2025-01-08T21:29:35.569+0100 DEBUG              [main]                         be.pxl.services.ReviewTests   - Running with Spring Boot v3.3.5, Spring v6.1.14
+2025-01-08T21:29:35.570+0100 INFO               [main]                         be.pxl.services.ReviewTests   - No active profile set, falling back to 1 default profile: "default"
+2025-01-08T21:29:45.124+0100 INFO               [main]                         be.pxl.services.ReviewTests   - Started ReviewTests in 11.186 seconds (process running for 37.069)
+2025-01-08T21:29:45.551+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/33reject
+2025-01-08T21:29:45.551+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Finding post with id: 33
+2025-01-08T21:29:45.555+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post with id: 33 found
+2025-01-08T21:29:45.618+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1reject
+2025-01-08T21:29:45.618+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Finding post with id: 1
+2025-01-08T21:29:45.621+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post with id: 1 found
+2025-01-08T21:29:45.622+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking is post: 1 exists
+2025-01-08T21:29:45.622+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 does exist
+2025-01-08T21:29:45.622+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking if post: 1 is submitted
+2025-01-08T21:29:45.658+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1reject
+2025-01-08T21:29:45.658+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Finding post with id: 1
+2025-01-08T21:29:45.659+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post with id: 1 found
+2025-01-08T21:29:45.659+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking is post: 1 exists
+2025-01-08T21:29:45.660+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 does exist
+2025-01-08T21:29:45.660+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking if post: 1 is submitted
+2025-01-08T21:29:45.660+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 has been submitted
+2025-01-08T21:29:45.660+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Sending a Rejected Message To Post-Service
+2025-01-08T21:29:45.886+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Building the review object.
+2025-01-08T21:29:45.887+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Saving review (Review(id=null, postId=1, feedback=Post needs improvement, dateCreated=2025-01-08T21:29:45.887466700, reviewer=John Doe, reviewerId=123)) in repository
+2025-01-08T21:29:46.026+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Successfully saved review with id: 1
+2025-01-08T21:29:46.148+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [GET] /api/review/1
+2025-01-08T21:29:46.148+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Retrieving all review
+2025-01-08T21:29:46.200+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Mapping [Review(id=2, postId=1, feedback=Feedback 1, dateCreated=2025-01-08T21:29:46.123253, reviewer=Reviewer1, reviewerId=1), Review(id=3, postId=1, feedback=Feedback 2, dateCreated=2025-01-08T21:29:46.123253, reviewer=Reviewer2, reviewerId=2)] To ReviewResponse
+2025-01-08T21:29:46.335+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1/approve
+2025-01-08T21:29:46.336+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Sending a Approved Message To Post-Service
+2025-01-08T21:33:53.682+0100 INFO               [main]                         be.pxl.services.ReviewTests   - Starting ReviewTests using Java 21.0.2 with PID 6052 (started by Arne in C:\Users\Arne\Documents\PXL_VIERDE_JAAR\1_FullstackJava\Project\project-ArneJanssenPXL\backend-java\FullStackJavaPXL\review-service)
+2025-01-08T21:33:53.684+0100 DEBUG              [main]                         be.pxl.services.ReviewTests   - Running with Spring Boot v3.3.5, Spring v6.1.14
+2025-01-08T21:33:53.687+0100 INFO               [main]                         be.pxl.services.ReviewTests   - No active profile set, falling back to 1 default profile: "default"
+2025-01-08T21:34:05.551+0100 INFO               [main]                         be.pxl.services.ReviewTests   - Started ReviewTests in 13.937 seconds (process running for 43.979)
+2025-01-08T21:34:06.059+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1reject
+2025-01-08T21:34:06.060+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Finding post with id: 1
+2025-01-08T21:34:06.067+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post with id: 1 found
+2025-01-08T21:34:06.153+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1reject
+2025-01-08T21:34:06.154+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Finding post with id: 1
+2025-01-08T21:34:06.154+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post with id: 1 found
+2025-01-08T21:34:06.154+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking is post: 1 exists
+2025-01-08T21:34:06.155+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 does exist
+2025-01-08T21:34:06.155+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking if post: 1 is submitted
+2025-01-08T21:34:06.190+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1reject
+2025-01-08T21:34:06.190+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Finding post with id: 1
+2025-01-08T21:34:06.191+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post with id: 1 found
+2025-01-08T21:34:06.192+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking is post: 1 exists
+2025-01-08T21:34:06.192+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 does exist
+2025-01-08T21:34:06.192+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking if post: 1 is submitted
+2025-01-08T21:34:06.192+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 has been submitted
+2025-01-08T21:34:06.192+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Sending a Rejected Message To Post-Service
+2025-01-08T21:34:06.409+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Building the review object.
+2025-01-08T21:34:06.410+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Saving review (Review(id=null, postId=1, feedback=Post needs improvement, dateCreated=2025-01-08T21:34:06.410386400, reviewer=John Doe, reviewerId=123)) in repository
+2025-01-08T21:34:06.539+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Successfully saved review with id: 1
+2025-01-08T21:34:06.674+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [GET] /api/review/1
+2025-01-08T21:34:06.674+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Retrieving all review
+2025-01-08T21:34:06.724+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Mapping [Review(id=2, postId=1, feedback=Feedback 1, dateCreated=2025-01-08T21:34:06.645069, reviewer=Reviewer1, reviewerId=1), Review(id=3, postId=1, feedback=Feedback 2, dateCreated=2025-01-08T21:34:06.645069, reviewer=Reviewer2, reviewerId=2)] To ReviewResponse
+2025-01-08T21:34:06.856+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1/approve
+2025-01-08T21:34:06.856+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Sending a Approved Message To Post-Service
+2025-01-08T21:37:03.592+0100 INFO               [main]                         be.pxl.services.ReviewTests   - Starting ReviewTests using Java 21.0.2 with PID 10508 (started by Arne in C:\Users\Arne\Documents\PXL_VIERDE_JAAR\1_FullstackJava\Project\project-ArneJanssenPXL\backend-java\FullStackJavaPXL\review-service)
+2025-01-08T21:37:03.593+0100 DEBUG              [main]                         be.pxl.services.ReviewTests   - Running with Spring Boot v3.3.5, Spring v6.1.14
+2025-01-08T21:37:03.595+0100 INFO               [main]                         be.pxl.services.ReviewTests   - No active profile set, falling back to 1 default profile: "default"
+2025-01-08T21:37:16.681+0100 INFO               [main]                         be.pxl.services.ReviewTests   - Started ReviewTests in 15.144 seconds (process running for 47.586)
+2025-01-08T21:37:17.226+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1reject
+2025-01-08T21:37:17.230+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Finding post with id: 1
+2025-01-08T21:37:17.241+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post with id: 1 found
+2025-01-08T21:37:17.241+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking if post: 1 exists
+2025-01-08T21:37:17.303+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1reject
+2025-01-08T21:37:17.304+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Finding post with id: 1
+2025-01-08T21:37:17.305+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post with id: 1 found
+2025-01-08T21:37:17.305+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking if post: 1 exists
+2025-01-08T21:37:17.305+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 does exist
+2025-01-08T21:37:17.305+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking if post: 1 is submitted
+2025-01-08T21:37:17.333+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1reject
+2025-01-08T21:37:17.333+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Finding post with id: 1
+2025-01-08T21:37:17.333+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post with id: 1 found
+2025-01-08T21:37:17.334+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking if post: 1 exists
+2025-01-08T21:37:17.334+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 does exist
+2025-01-08T21:37:17.334+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Checking if post: 1 is submitted
+2025-01-08T21:37:17.334+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Post 1 has been submitted
+2025-01-08T21:37:17.334+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Sending a Rejected Message To Post-Service
+2025-01-08T21:37:17.572+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Building the review object.
+2025-01-08T21:37:17.573+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Saving review (Review(id=null, postId=1, feedback=Post needs improvement, dateCreated=2025-01-08T21:37:17.573140900, reviewer=John Doe, reviewerId=123)) in repository
+2025-01-08T21:37:17.709+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Successfully saved review with id: 1
+2025-01-08T21:37:17.840+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [GET] /api/review/1
+2025-01-08T21:37:17.841+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Retrieving all review
+2025-01-08T21:37:17.892+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Mapping [Review(id=2, postId=1, feedback=Feedback 1, dateCreated=2025-01-08T21:37:17.811888, reviewer=Reviewer1, reviewerId=1), Review(id=3, postId=1, feedback=Feedback 2, dateCreated=2025-01-08T21:37:17.811888, reviewer=Reviewer2, reviewerId=2)] To ReviewResponse
+2025-01-08T21:37:18.079+0100 INFO               [main]                         be.pxl.services.controller.api.ReviewController - Calling endpoint [POST] /api/review/1/approve
+2025-01-08T21:37:18.079+0100 INFO               [main]                         be.pxl.services.services.ReviewService - Sending a Approved Message To Post-Service

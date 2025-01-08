@@ -1,1 +1,18 @@
-# This file will contain a script in orde to start up the system (all microservices) 
+version: '3.8'
+services:
+  front-end:
+        container_name: front-end
+        build:
+          context: ./frontend-web/fullstackjavapxl
+          dockerfile: Dockerfile
+        ports:      
+          - "9000:80"
+  rabbitmq:
+      image: rabbitmq:4.0-management 
+      container_name: rabbitmq
+      ports:
+        - "5672:5672"     
+        - "15672:15672"   
+      environment:
+        RABBITMQ_DEFAULT_USER: guest   
+        RABBITMQ_DEFAULT_PASS: guest

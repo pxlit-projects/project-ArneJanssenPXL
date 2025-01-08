@@ -66,10 +66,10 @@ public class ReviewService implements IReviewService{
         }
         log.info("Post {} has been submitted", post.getId());
 
-        log.info("Checking if user: {} is the owner: {}", reviewerId, post.getAuthorId());
+        /*log.info("Checking if user: {} is the owner: {}", reviewerId, post.getAuthorId());
         if (post.getAuthorId() != reviewerId){
             throw new PostUnauthorizedException("The reviewer: " + reviewerId + " is not the owner: " + post.getAuthorId());
-        }
+        }*/
 
         log.info("Sending a Rejected Message To Post-Service");
         rabbitTemplate.convertAndSend("rejectedPostQueue", id);

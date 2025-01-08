@@ -34,10 +34,10 @@ public class QueueServiceTests {
 
     @Test
     public void testApprovedPost(){
-        Post post = new Post(1L, "Author", 1, "Content", "Title", "Category", null, LocalDateTime.now(), PostStatus.SUBMITTED);
-        when(postRepository.findById(1L)).thenReturn(Optional.of(post));
+        Post post = new Post(15L, "Author", 1, "Content", "Title", "Category", null, LocalDateTime.now(), PostStatus.SUBMITTED);
+        when(postRepository.findById(15L)).thenReturn(Optional.of(post));
 
-        queueService.approvedPost(1L);
+        queueService.approvedPost(15L);
 
         assertEquals(PostStatus.APPROVED, post.getPostStatus());
         verify(postRepository, times(1)).save(post);
@@ -46,10 +46,10 @@ public class QueueServiceTests {
 
     @Test
     public void testRejectedPost(){
-        Post post = new Post(1L, "Author", 1, "Content", "Title", "Category", null, LocalDateTime.now(), PostStatus.SUBMITTED);
-        when(postRepository.findById(1L)).thenReturn(Optional.of(post));
+        Post post = new Post(15L, "Author", 1, "Content", "Title", "Category", null, LocalDateTime.now(), PostStatus.SUBMITTED);
+        when(postRepository.findById(15L)).thenReturn(Optional.of(post));
 
-        queueService.rejectedPost(1L);
+        queueService.rejectedPost(15L);
 
         assertEquals(PostStatus.REJECTED, post.getPostStatus());
         verify(postRepository, times(1)).save(post);

@@ -23,18 +23,25 @@ export class PostApprovedListComponent implements OnInit{
 
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser();
-    this.postService.getPostsByAuthorIdAndStatus(this.user!.username, this.user!.id, this.user!.role, PostStatus.APPROVED).subscribe({
-      next: (posts) => {
-        this.posts = posts;
-      }
-    });
+    if (this.user){
+      this.postService.getPostsByAuthorIdAndStatus(this.user!.username, this.user!.id, this.user!.role, PostStatus.APPROVED).subscribe({
+        next: (posts) => {
+          this.posts = posts;
+        }
+      });
+    }
+    else{
+      this.posts = []
+    }
   }
 
   handleFilter(filter: Filter): void {
-    this.postService.filterApprovedPosts(filter, this.user!.username, this.user!.id, this.user!.role).subscribe({
-      next: (posts) => {
-        this.posts = posts;
-      }
-    });
+    if (this.user){
+      this.postService.filterApprovedPosts(filter, this.user!.username, this.user!.id, this.user!.role).subscribe({
+        next: (posts) => {
+          this.posts = posts;
+        }
+      });
+    }
   }
 }

@@ -8,7 +8,17 @@ import { Post } from "../shared/models/post.model";
 describe('PostItemComponent', () => {
     let component: PostItemComponent;
     let fixture: ComponentFixture<PostItemComponent>;
-    const mockPost: Post = new Post('John Doe', 'Post Content 1', new Date(), false, 'Post Title 1', 'Tech');
+    const mockPost: Post = {
+      id: 1,
+      title: 'Post Title 1',
+      content: 'Post Content 1',
+      category: 'Tech',
+      postStatus: 'CONCEPT',
+      author: 'John Doe',
+      authorId: 1,
+      dateCreated: new Date(),
+      datePublished: new Date(),
+    };
   
     beforeEach(() => {
       TestBed.configureTestingModule({

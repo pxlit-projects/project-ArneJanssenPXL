@@ -9,17 +9,17 @@ describe('PostService', () => {
   let service: PostService;
   let httpMock: HttpTestingController;
 
-  const mockPosts: Post[] = [
-    new Post('Author1', 'Content1', new Date('2023-11-01'), false, 'Title1', 'Category1'),
-    new Post('Author2', 'Content2', new Date('2023-11-02'), true, 'Title2', 'Category2'),
-  ];
-
   const apiUrl = environment.apiUrl + 'post/api/post';
+
+  const mockPosts: Post[] = [
+    { id: 1, title: 'Title1', content: 'Content1', category: 'Category1', postStatus: 'PUBLISHED', author: 'Author1', authorId: 1, dateCreated: new Date('2023-11-01'), datePublished: new Date('2023-11-01') },
+    { id: 2, title: 'Title2', content: 'Content2', category: 'Category2', postStatus: 'CONCEPT', author: 'Author2', authorId: 2, dateCreated: new Date('2023-11-02'), datePublished: new Date('2023-11-02') },
+  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [PostService]
+      providers: [PostService],
     });
 
     service = TestBed.inject(PostService);
@@ -34,26 +34,6 @@ describe('PostService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch all posts', () => {
-    service.getAllPosts().subscribe((posts) => {
-      expect(posts).toEqual(mockPosts);
-    });
-
-    const req = httpMock.expectOne(apiUrl);
-    expect(req.request.method).toBe('GET');
-    req.flush(mockPosts);
-  });
-
-  it('should fetch all concept posts', () => {
-    service.getAllConceptPosts().subscribe((posts) => {
-      expect(posts).toEqual(mockPosts);
-    });
-
-    const req = httpMock.expectOne(`${apiUrl}/concept`);
-    expect(req.request.method).toBe('GET');
-    req.flush(mockPosts);
-  });
-
   it('should fetch all published posts', () => {
     service.getAllPublishedPosts().subscribe((posts) => {
       expect(posts).toEqual(mockPosts);
@@ -64,32 +44,103 @@ describe('PostService', () => {
     req.flush(mockPosts);
   });
 
+  it('should fetch all submitted posts', () => {
+    const username = 'Author1';
+    const userId = 1;
+    const role = 'USER';
+
+    service.getAllSubmittedPosts(username, userId, role).subscribe((posts) => {
+      expect(posts).toEqual(mockPosts);
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}/submitted`);
+    expect(req.request.method).toBe('GET');
+    expect(req.request.headers.get('username')).toBe(username);
+    expect(req.request.headers.get('userId')).toBe(userId.toString());
+    expect(req.request.headers.get('role')).toBe(role);
+    req.flush(mockPosts);
+  });
+
   it('should create a new post', () => {
-    const newPost = new Post('Author3', 'Content3', new Date('2023-11-03'), false, 'Title3', 'Category3');
-    service.createPost(newPost).subscribe((post) => {
+    const newPost: Post = {
+      id: 3,
+      title: 'Title3',
+      content: 'Content3',
+      category: 'Category3',
+      postStatus: 'CONCEPT',
+      author: 'Author3',
+      authorId: 3,
+      dateCreated: new Date('2023-11-03'),
+      datePublished: new Date('2023-11-03'),
+    };
+
+    const username = 'Author3';
+    const userId = 3;
+    const role = 'USER';
+
+    service.createPost(newPost, username, userId, role).subscribe((post) => {
       expect(post).toEqual(newPost);
     });
 
     const req = httpMock.expectOne(apiUrl);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(newPost);
+    expect(req.request.headers.get('username')).toBe(username);
+    expect(req.request.headers.get('userId')).toBe(userId.toString());
+    expect(req.request.headers.get('role')).toBe(role);
     req.flush(newPost);
   });
 
   it('should update a post by ID', () => {
-    const updatedPost = new Post('UpdatedAuthor', 'UpdatedContent', new Date('2023-11-04'), false, 'UpdatedTitle', 'UpdatedCategory');
-    service.updatePost(1, updatedPost).subscribe((response) => {
-      expect(response).toBeNull(); 
+    const updatedPost: Post = {
+      id: 1,
+      title: 'Updated Title',
+      content: 'Updated Content',
+      category: 'Updated Category',
+      postStatus: 'PUBLISHED',
+      author: 'Updated Author',
+      authorId: 1,
+      dateCreated: new Date('2023-11-01'),
+      datePublished: new Date('2023-11-04'),
+    };
+
+    const username = 'Updated Author';
+    const userId = 1;
+    const role = 'ADMIN';
+
+    service.updatePost(1, updatedPost, username, userId, role).subscribe(() => {
+      expect().nothing();
     });
-  
+
     const req = httpMock.expectOne(`${apiUrl}/1`);
     expect(req.request.method).toBe('PUT');
     expect(req.request.body).toEqual(updatedPost);
-    req.flush(null); 
+    expect(req.request.headers.get('username')).toBe(username);
+    expect(req.request.headers.get('userId')).toBe(userId.toString());
+    expect(req.request.headers.get('role')).toBe(role);
+    req.flush(null);
+  });
+
+  it('should publish a post', () => {
+    const username = 'Editor';
+    const userId = 2;
+    const role = 'EDITOR';
+
+    service.publishPost(1, username, userId, role).subscribe(() => {
+      expect().nothing();
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}/1/publish`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.headers.get('username')).toBe(username);
+    expect(req.request.headers.get('userId')).toBe(userId.toString());
+    expect(req.request.headers.get('role')).toBe(role);
+    req.flush(null);
   });
 
   it('should fetch a post by ID', () => {
     const post = mockPosts[0];
+
     service.getPostById(1).subscribe((fetchedPost) => {
       expect(fetchedPost).toEqual(post);
     });
@@ -101,26 +152,12 @@ describe('PostService', () => {
 
   it('should filter published posts based on criteria', () => {
     const filter: Filter = { content: 'Content1', author: 'Author1', datePublished: new Date('2023-11-01') };
-    const filteredPosts = [mockPosts[0]];
 
     service.filterPublishedPosts(filter).subscribe((posts) => {
-      expect(posts).toEqual(filteredPosts);
+      expect(posts).toEqual([mockPosts[0]]);
     });
 
     const req = httpMock.expectOne(`${apiUrl}/published`);
-    expect(req.request.method).toBe('GET');
-    req.flush(mockPosts);
-  });
-
-  it('should filter concept posts based on criteria', () => {
-    const filter: Filter = { content: 'Content2', author: 'Author2', datePublished: new Date('2023-11-02') };
-    const filteredPosts = [mockPosts[1]];
-
-    service.filterConceptPosts(filter).subscribe((posts) => {
-      expect(posts).toEqual(filteredPosts);
-    });
-
-    const req = httpMock.expectOne(`${apiUrl}/concept`);
     expect(req.request.method).toBe('GET');
     req.flush(mockPosts);
   });

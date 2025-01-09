@@ -22,18 +22,30 @@ export class PostListSubmittedComponent implements OnInit{
 
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser();
-    this.postService.getAllSubmittedPosts(this.user!.username, this.user!.id, this.user!.role).subscribe({
-      next: (posts) => {
-        this.posts = posts;
-      }
-    });
+    if (this.user) {
+      this.postService
+        .getAllSubmittedPosts(this.user.username, this.user.id, this.user.role)
+        .subscribe({
+          next: (posts) => {
+            this.posts = posts;
+          },
+        });
+    } 
+    else {
+      this.posts = [];
+    }
   }
 
   handleFilter(filter: Filter): void {
-    this.postService.filterSubmittedPosts(this.user!.username, this.user!.id, this.user!.role, filter).subscribe({
-      next: (posts) => {
-        this.posts = posts;
-      }
-    });
+    if (this.user) {
+      this.postService
+        .filterSubmittedPosts(this.user.username, this.user.id, this.user.role, filter)
+        .subscribe({
+          next: (posts) => {
+            this.posts = posts;
+          },
+        }
+      );
+    }
   }
 }

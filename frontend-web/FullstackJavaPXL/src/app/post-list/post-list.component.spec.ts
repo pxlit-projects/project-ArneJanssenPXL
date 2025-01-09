@@ -3,29 +3,29 @@ import { PostListComponent } from './post-list.component';
 import { PostService } from '../shared/services/post.service';
 import { Post } from '../shared/models/post.model';
 import { Filter } from '../shared/models/filter.model';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../shared/services/auth.service';
+import { User } from '../shared/models/user.model';
+import { PostStatus } from '../shared/models/postStatus.model';
 
 describe('PostListComponent', () => {
   let component: PostListComponent;
   let fixture: ComponentFixture<PostListComponent>;
-  let postServiceMock: jasmine.SpyObj<PostService>;
-
-  const mockPosts: Post[] = [
-    new Post('John Doe', 'Post Content 1', new Date(), false, 'Post Title 1', 'Tech'),
-    new Post('Jane Smith', 'Post Content 2', new Date(), false, 'Post Title 2', 'Lifestyle')
-  ];
+  let postServiceMock: jasmine.SpyObj<PostService>
+  let authServiceMock: jasmine.SpyObj<AuthService>
 
   beforeEach(async () => {
-    postServiceMock = jasmine.createSpyObj('PostService', ['getAllPublishedPosts', 'filterPublishedPosts']);
+    authServiceMock = jasmine.createSpyObj('AuthService', ['getCurrentUser']);
+    postServiceMock = jasmine.createSpyObj('PostService', ['getPostsByAuthorIdAndStatus', 'filterPublishedPosts', 'getAllPublishedPosts']);
 
     await TestBed.configureTestingModule({
-      imports: [PostListComponent, HttpClientTestingModule],
+      imports: [PostListComponent],
       providers: [
+        { provide: AuthService, useValue: authServiceMock },
         { provide: PostService, useValue: postServiceMock },
-        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: new Map() } } }
-      ]
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PostListComponent);
@@ -36,31 +36,72 @@ describe('PostListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should fetch all published posts on initialization', () => {
-    postServiceMock.getAllPublishedPosts.and.returnValue(of(mockPosts));
+  describe('ngOnInit', () => {
+    it('should call authService.getCurrentUser and fetch published posts', () => {
+      const mockPosts: Post[] = [
+        {
+          id: 1,
+          title: 'Post Title',
+          content: 'Post Content',
+          category: 'Category',
+          postStatus: 'PUBLISHED',
+          author: 'redacteur1',
+          authorId: 3,
+          dateCreated: new Date(),
+          datePublished: new Date(),
+        },
+      ];
+      postServiceMock.getAllPublishedPosts.and.returnValue(of(mockPosts));
 
-    fixture.detectChanges();
+      component.ngOnInit();
 
-    expect(postServiceMock.getAllPublishedPosts).toHaveBeenCalled();
-    expect(component.posts).toEqual(mockPosts);
+      expect(postServiceMock.getAllPublishedPosts).toHaveBeenCalled();
+      expect(component.posts).toEqual(mockPosts);
+    });
+
+    it('should handle errors when fetching published posts', () => {
+      postServiceMock.getAllPublishedPosts.and.returnValue(throwError(() => new Error('Network Error')));
+
+      component.ngOnInit();
+
+      expect(postServiceMock.getAllPublishedPosts).toHaveBeenCalled();
+      expect(component.posts).toEqual([]);
+    });
   });
 
-  it('should filter posts based on the filter criteria', () => {
-    const filter: Filter = {
-      content: 'Post Content 1',
-      author: 'John Doe',
-      datePublished: null
-    };
-    const filteredPosts: Post[] = [
-      new Post('John Doe', 'Post Content 1', new Date(), false, 'Post Title 1', 'Tech')
-    ];
+  describe('handleFilter', () => {
+    it('should call postService.filterPublishedPosts with filter and update posts', () => {
+      const mockFilter: Filter = { content: 'test', author: '', datePublished: new Date() };
+      const mockFilteredPosts: Post[] = [
+        {
+          id: 2,
+          title: 'Filtered Post',
+          content: 'Filtered Content',
+          category: 'Category',
+          postStatus: 'PUBLISHED',
+          author: 'redacteur1',
+          authorId: 3,
+          dateCreated: new Date(),
+          datePublished: new Date(),
+        },
+      ];
+      postServiceMock.filterPublishedPosts.and.returnValue(of(mockFilteredPosts));
 
-    postServiceMock.filterPublishedPosts.and.returnValue(of(filteredPosts));
+      component.handleFilter(mockFilter);
 
-    component.handleFilter(filter);
+      expect(postServiceMock.filterPublishedPosts).toHaveBeenCalledWith(mockFilter);
+      expect(component.posts).toEqual(mockFilteredPosts);
+    });
 
-    expect(postServiceMock.filterPublishedPosts).toHaveBeenCalledWith(filter);
-    expect(component.posts).toEqual(filteredPosts);
+    it('should handle errors when filtering posts', () => {
+      const mockFilter: Filter = { content: 'test', author: '', datePublished: new Date() };
+      postServiceMock.filterPublishedPosts.and.returnValue(throwError(() => new Error('Filter Error')));
+
+      component.handleFilter(mockFilter);
+
+      expect(postServiceMock.filterPublishedPosts).toHaveBeenCalledWith(mockFilter);
+      expect(component.posts).toEqual([]);
+    });
   });
 });
 

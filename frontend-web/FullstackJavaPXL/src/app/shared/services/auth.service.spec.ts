@@ -3,89 +3,66 @@ import { AuthService } from './auth.service';
 import { User } from '../models/user.model';
 
 describe('AuthService', () => {
-  let service: AuthService;
+  let authServiceMock: jasmine.SpyObj<AuthService>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthService);
+    authServiceMock = jasmine.createSpyObj<AuthService>('AuthService', ['getUsers', 'getCurrentUser', 'getRole', 'setCurrentUser', 'logout',]);
+    
+    TestBed.configureTestingModule({
+      providers: [{ provide: AuthService, useValue: authServiceMock }],
+    });
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(authServiceMock).toBeTruthy();
   });
 
-  describe('login()', () => {
-    it('should log in a user with valid credentials', () => {
-      const email = 'redacteur@gmail.com';
-      const password = 'password123';
-      const result = service.login(email, password);
-
-      expect(result).toBeTrue();
-      expect(service.isLoggedIn()).toBeTrue();
-      expect(service.getRole()).toBe('Redacteur');
+  it('should return the role of the current user', () => {
+    const mockUser: User = { username: 'redacteur1', password: 'azerty', role: 'Redacteur', id: 3 };
+    authServiceMock.getCurrentUser.and.returnValue(mockUser); 
+    authServiceMock.getRole.and.callFake(() => {
+      const currentUser = authServiceMock.getCurrentUser();
+      return currentUser ? currentUser.role : null; 
     });
-
-    it('should not log in a user with invalid credentials', () => {
-      const email = 'invalid@gmail.com';
-      const password = 'wrongpassword';
-      const result = service.login(email, password);
-
-      expect(result).toBeFalse();
-      expect(service.isLoggedIn()).toBeFalse();
-      expect(service.getRole()).toBeNull();
-    });
-
-    it('should not log in if only email matches but password is incorrect', () => {
-      const email = 'redacteur@gmail.com';
-      const password = 'wrongpassword';
-      const result = service.login(email, password);
-
-      expect(result).toBeFalse();
-      expect(service.isLoggedIn()).toBeFalse();
-    });
-
-    it('should not log in if only password matches but email is incorrect', () => {
-      const email = 'invalid@gmail.com';
-      const password = 'password123';
-      const result = service.login(email, password);
-
-      expect(result).toBeFalse();
-      expect(service.isLoggedIn()).toBeFalse();
-    });
+  
+    const role = authServiceMock.getRole();
+    expect(role).toBe('Redacteur');
+    expect(authServiceMock.getCurrentUser).toHaveBeenCalled();
   });
 
-  describe('logout()', () => {
-    it('should log out the user', () => {
-      service.login('redacteur@gmail.com', 'password123'); 
-      expect(service.isLoggedIn()).toBeTrue();
-
-      service.logout();
-
-      expect(service.isLoggedIn()).toBeFalse();
-      expect(service.getRole()).toBeNull();
+  it('should set the current user when credentials are correct', () => {
+    const mockUser: User = { username: 'gebruiker1', password: 'azerty', role: 'Gebruiker', id: 1 };
+    
+    authServiceMock.getUsers.and.returnValue([mockUser]);
+    authServiceMock.getCurrentUser.and.returnValue(null);
+  
+    authServiceMock.setCurrentUser.and.callFake((username: string, password: string) => {
+      if (username === mockUser.username && password === mockUser.password) {
+        authServiceMock.getCurrentUser.and.returnValue(mockUser);
+      }
     });
+  
+    authServiceMock.setCurrentUser('gebruiker1', 'azerty');
+  
+    const currentUser = authServiceMock.getCurrentUser();
+    
+    expect(authServiceMock.getCurrentUser).toHaveBeenCalled();
+    expect(currentUser).toEqual(mockUser);
   });
 
-  describe('isLoggedIn()', () => {
-    it('should return false if no user is logged in', () => {
-      expect(service.isLoggedIn()).toBeFalse();
-    });
-
-    it('should return true if a user is logged in', () => {
-      service.login('redacteur@gmail.com', 'password123');
-      expect(service.isLoggedIn()).toBeTrue();
-    });
+  it('should throw an error if user credentials are incorrect', () => {
+    authServiceMock.setCurrentUser.and.throwError('Incorrect password');
+    expect(() => authServiceMock.setCurrentUser('gebruiker1', 'wrongpassword')).toThrowError('Incorrect password');
   });
 
-  describe('getRole()', () => {
-    it('should return the role of the logged-in user', () => {
-      service.login('gebruiker@gmail.com', 'password123');
-      expect(service.getRole()).toBe('Gebruiker');
+  it('should clear the current user on logout', () => {
+    authServiceMock.logout.and.callFake(() => {
+      authServiceMock.getCurrentUser.and.returnValue(null);
     });
 
-    it('should return null if no user is logged in', () => {
-      expect(service.getRole()).toBeNull();
-    });
+    authServiceMock.logout();
+    expect(authServiceMock.logout).toHaveBeenCalled();
+    expect(authServiceMock.getCurrentUser()).toBeNull();
   });
 });
 

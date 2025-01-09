@@ -20,7 +20,11 @@ export class PostListComponent implements OnInit {
     this.postService.getAllPublishedPosts().subscribe({
       next: (posts) => {
         this.posts = posts;
-      }
+      },
+      error: (err) => {
+        console.error('Error fetching published posts:', err);
+        this.posts = []; 
+      },
     });
   }
 
@@ -28,7 +32,11 @@ export class PostListComponent implements OnInit {
     this.postService.filterPublishedPosts(filter).subscribe({
       next: (posts) => {
         this.posts = posts;
-      }
+      },
+      error: (err) => {
+        console.error('Error filtering posts:', err);
+        this.posts = [];
+      },
     });
   }
 }

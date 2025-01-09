@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
 import { AuthService } from '../shared/services/auth.service'; 
 import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -11,11 +10,11 @@ describe('LoginComponent', () => {
   let routerMock: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    authServiceMock = jasmine.createSpyObj('AuthService', ['login', 'isLoggedIn', 'logout', 'getRole']);
+    authServiceMock = jasmine.createSpyObj('AuthService', ['saveCurrentUser', 'getUsers', 'getCurrentUser', 'getRole', 'setCurrentUser', 'logout']);
     routerMock = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [LoginComponent, RouterTestingModule],
+      imports: [LoginComponent],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: Router, useValue: routerMock },
@@ -31,33 +30,50 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call login method from AuthService with email and password', () => {
-    component.email = 'test@gmail.com';
-    component.password = 'password123';
+  describe('ngOnInit', () => {
+    it('should call getCurrentUser from AuthService', () => {
+      //authServiceMock.getCurrentUser.and.returnValue(null);
+      component.ngOnInit();
 
-    authServiceMock.login.and.returnValue(true);
-
-    component.login();
-
-    expect(authServiceMock.login).toHaveBeenCalledWith('test@gmail.com', 'password123');
+      expect(authServiceMock.getCurrentUser).toHaveBeenCalled();
+    });
   });
 
-  it('should navigate to /posts if login is successful', () => {
-    authServiceMock.login.and.returnValue(true);
+  describe('login', () => {
+    beforeEach(() => {
+      component.username = 'gebruiker1';
+      component.password = 'azerty';
+    });
 
-    component.login();
+    it('should call setCurrentUser with correct credentials and navigate on success', () => {
+      authServiceMock.setCurrentUser.and.callThrough();
 
-    expect(component.loginFailed).toBeFalse();
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/posts']);
-  });
+      component.login();
 
-  it('should set loginFailed to true if login is unsuccessful', () => {
-    authServiceMock.login.and.returnValue(false);
+      expect(authServiceMock.setCurrentUser).toHaveBeenCalledWith('gebruiker1', 'azerty');
+      expect(routerMock.navigate).toHaveBeenCalledWith(['/posts']);
+      expect(component.loginError).toBeNull();
+    });
 
-    component.login();
+    it('should set loginError if password is incorrect', () => {
+      authServiceMock.setCurrentUser.and.throwError('Incorrect password');
 
-    expect(component.loginFailed).toBeTrue();
-    expect(routerMock.navigate).not.toHaveBeenCalled();
+      component.login();
+
+      expect(authServiceMock.setCurrentUser).toHaveBeenCalledWith('gebruiker1', 'azerty');
+      expect(routerMock.navigate).not.toHaveBeenCalled();
+      expect(component.loginError).toBe('Incorrect password');
+    });
+
+    it('should set loginError if user does not exist', () => {
+      authServiceMock.setCurrentUser.and.throwError('User not found');
+
+      component.login();
+
+      expect(authServiceMock.setCurrentUser).toHaveBeenCalledWith('gebruiker1', 'azerty');
+      expect(routerMock.navigate).not.toHaveBeenCalled();
+      expect(component.loginError).toBe('User not found');
+    });
   });
 });
 

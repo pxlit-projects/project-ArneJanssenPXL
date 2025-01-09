@@ -35,12 +35,6 @@ export class UpdatePostComponent implements OnInit{
 
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser();
-    if (!this.user) {
-      this.router.navigate(['/login']);
-    }
-    if (this.user!.role !== 'Redacteur') {
-      this.router.navigate(['/posts']);
-    }
 
     this.post$ = this.postService.getPostById(this.id, this.user!.username, this.user!.id, this.user!.role);
 

@@ -172,7 +172,8 @@ export class DetailPostComponent implements OnInit , OnDestroy{
         .deleteComment(commentId, this.user.username, this.user.id, this.user.role)
         .subscribe(() => {
           this.comments$ = this.commentService.getCommentsById(this.id); 
-        });
+        }
+      );
     }
   }
 }

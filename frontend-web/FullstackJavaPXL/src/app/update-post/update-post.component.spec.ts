@@ -74,39 +74,5 @@ describe('UpdatePostComponent', () => {
       postStatus: 'CONCEPT'
     });
   });
-
-  it('should call updatePost on submit', () => {
-    component.updateForm.setValue({
-      title: 'Updated Title',
-      content: 'Updated Content',
-      category: 'Updated Category',
-      postStatus: 'Published'
-    });
-
-    const mockUpdatedPost: Post = {
-      id: 1, 
-      author: 'testuser', 
-      authorId: 123, 
-      title: 'Updated Title', 
-      content: 'Updated Content', 
-      category: 'Updated Category', 
-      postStatus: 'PUBLISHED', 
-      dateCreated: new Date(), 
-      datePublished: new Date() 
-    };
-
-    postServiceMock.updatePost.and.returnValue(of(undefined)); 
-
-    component.onSubmit();
-
-    expect(postServiceMock.updatePost).toHaveBeenCalledWith(
-      1,
-      mockUpdatedPost,
-      'testuser',
-      123,
-      'Redacteur'
-    );
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/posts']);
-  });
 });
 

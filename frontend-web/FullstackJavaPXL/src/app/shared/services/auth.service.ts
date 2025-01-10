@@ -38,7 +38,8 @@ export class AuthService {
       if (user.password === password) {
         this.currentUser = user;
         this.saveCurrentUser();
-      } else {
+      } 
+      else {
         throw new Error('Incorrect password');
       }
     } else {

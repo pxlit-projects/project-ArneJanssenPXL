@@ -16,4 +16,13 @@ Each folder contains its own specific `.gitignore` file.
 
 ## How to setup and run this application
 
-:heavy_check_mark:_(COMMENT) Add setup instructions and provide some direction to run the whole  application: frontend to backend._
+### Frontend
+1. Run ``Docker compose up``
+2. Serve to localhost on port: 9000
+
+### Backend
+
+1. Start up Docker Desktop
+2. Start up Heidi SQL
+3. Start up Micro Services (Config - Discovery - Gateway - Post - Review - Comment)
+
